@@ -7,51 +7,51 @@
 package entity;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
 
 /**
  *
- * @author User
+ * @author Liwei__xD
  */
 @Entity
 public class FinishedGoodEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private String modelName;
-    private String modelDescription;
-    private double modelPrice;
-    
-    @ManyToMany
+    private Long modelID;
+    private String modelName; 
+    private String modelDescription; 
+    private double modelPrice; 
+    private String countryOrigin; 
+    @ManyToMany(cascade={CascadeType.ALL})
     @JoinTable(name="FinishedGoodEntity_RawMaterialEntity")
-    private Set<RawMaterialEntity> rawMats = new HashSet<RawMaterialEntity>();
-    
-    @OneToOne
-    private BOMEntity bom;
+    private List<RawMaterialEntity> parts = new ArrayList<>(); 
+    private List partQty;
 
-    public Long getId() {
-        return id;
+    public FinishedGoodEntity() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public FinishedGoodEntity(String modelName, String modelDescription, double modelPrice, String countryOrigin) {
+        this.modelName = modelName;
+        this.modelDescription = modelDescription;
+        this.modelPrice = modelPrice;
+        this.countryOrigin = countryOrigin;
     }
 
-    public BOMEntity getBom() {
-        return bom;
+    public Long getModelID() {
+        return modelID;
     }
 
-    public void setBom(BOMEntity bom) {
-        this.bom = bom;
+    public void setModelID(Long modelID) {
+        this.modelID = modelID;
     }
 
     public String getModelName() {
@@ -78,18 +78,34 @@ public class FinishedGoodEntity implements Serializable {
         this.modelPrice = modelPrice;
     }
 
-    public Set<RawMaterialEntity> getRawMats() {
-        return rawMats;
+    public String getCountryOrigin() {
+        return countryOrigin;
     }
 
-    public void setRawMats(Set<RawMaterialEntity> rawMats) {
-        this.rawMats = rawMats;
+    public void setCountryOrigin(String countryOrigin) {
+        this.countryOrigin = countryOrigin;
     }
 
+    public List<RawMaterialEntity> getParts() {
+        return parts;
+    }
+
+    public void setParts(List<RawMaterialEntity> parts) {
+        this.parts = parts;
+    }
+
+    public List getPartQty() {
+        return partQty;
+    }
+
+    public void setPartQty(List partQty) {
+        this.partQty = partQty;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (modelID != null ? modelID.hashCode() : 0);
         return hash;
     }
 
@@ -100,7 +116,7 @@ public class FinishedGoodEntity implements Serializable {
             return false;
         }
         FinishedGoodEntity other = (FinishedGoodEntity) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.modelID == null && other.modelID != null) || (this.modelID != null && !this.modelID.equals(other.modelID))) {
             return false;
         }
         return true;
@@ -108,7 +124,6 @@ public class FinishedGoodEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.FinishedGoodEntity[ id=" + id + " ]";
+        return "entity.FinishedGoodEntity[ id=" + modelID + " ]";
     }
-    
 }
