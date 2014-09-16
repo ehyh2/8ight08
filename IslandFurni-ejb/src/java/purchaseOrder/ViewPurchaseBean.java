@@ -30,6 +30,7 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
     @PersistenceContext
     private EntityManager em;
 
+@Override
 public List<ArrayList> viewUncompletedPurchaseOrderList(Long userID) {
 //displays all the purchase orders of the userID that are not completed
         List<ArrayList> al = new ArrayList();
@@ -57,7 +58,7 @@ public List<ArrayList> viewUncompletedPurchaseOrderList(Long userID) {
         return al;
     }    
 
-
+    @Override
     public List<ArrayList> viewCompletedPurchaseOrderList(Long userID) {
       //displays all the purchase orders of the userID that are completed
         List<ArrayList> al = new ArrayList();
@@ -87,7 +88,7 @@ public List<ArrayList> viewUncompletedPurchaseOrderList(Long userID) {
         
 
     }
-
+    @Override
     public List<ArrayList> viewPurchaseOrderDetails(String purchaseID) {
         List<ArrayList> al = new ArrayList();
         Query query1 = em.createQuery("SELECT p FROM PurchaseEntity WHERE p.id =:second");
@@ -127,7 +128,8 @@ public List<ArrayList> viewUncompletedPurchaseOrderList(Long userID) {
         }   
         return al;
     }
-
+    
+    @Override
     public void setStatusPending(Long purchaseID) {
         Query query1 = em.createQuery("SELECT p FROM PurchaseEntity WHERE p.id =:second");
         query1.setParameter("second", purchaseID);
@@ -138,6 +140,7 @@ public List<ArrayList> viewUncompletedPurchaseOrderList(Long userID) {
         em.persist(p);
     }
     
+    @Override
     public void setStatusSent(Long purchaseID) {
         Query query1 = em.createQuery("SELECT p FROM PurchaseEntity WHERE p.id =:second");
         query1.setParameter("second", purchaseID);
@@ -148,6 +151,7 @@ public List<ArrayList> viewUncompletedPurchaseOrderList(Long userID) {
         em.persist(p);
     }
     
+    @Override
     public void setStatusReceived(Long purchaseID) {
         Query query1 = em.createQuery("SELECT p FROM PurchaseEntity WHERE p.id =:second");
         query1.setParameter("second", purchaseID);
@@ -158,6 +162,7 @@ public List<ArrayList> viewUncompletedPurchaseOrderList(Long userID) {
         em.persist(p);
     }
     
+    @Override
     public void setStatusInProgress(Long purchaseID) {
         Query query1 = em.createQuery("SELECT p FROM PurchaseEntity WHERE p.id =:second");
         query1.setParameter("second", purchaseID);
@@ -168,6 +173,7 @@ public List<ArrayList> viewUncompletedPurchaseOrderList(Long userID) {
         em.persist(p);
     }
     
+    @Override
     public void setStatusCompleted(Long purchaseID) {
         Query query1 = em.createQuery("SELECT p FROM PurchaseEntity WHERE p.id =:second");
         query1.setParameter("second", purchaseID);
@@ -177,6 +183,8 @@ public List<ArrayList> viewUncompletedPurchaseOrderList(Long userID) {
         p.setStatus("completed");
         em.persist(p);
     }
+    
+    @Override
     public void createRawMaterialPurchaseOrder(String type, Long sendFrom, Long sendTo) {
         try {
             PurchaseOrderEntity purchaseOrderEntity = new PurchaseOrderEntity();
