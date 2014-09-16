@@ -8,19 +8,19 @@ package ifs.bom.bean;
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.faces.bean.ViewScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
-import manuFac.GlobalBeanLocal;
+
 
 /**
  *
  * @author Esther Hong
  */
 @Named(value = "bomManagerBean")
-@ViewScoped
+@SessionScoped
 public class BOMManagerBean implements Serializable {
 
     @EJB
