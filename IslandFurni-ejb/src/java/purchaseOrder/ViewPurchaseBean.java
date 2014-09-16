@@ -41,15 +41,15 @@ public List<ArrayList> viewUncompletedPurchaseOrderList(Long userID) {
             ArrayList alc = new ArrayList();
             PurchaseOrderEntity p = (PurchaseOrderEntity)it1.next();
             String pStatus = p.getStatus();
-            Long purchaseID = p.getId();
+            Long purchaseID = p.getPurchaseID();
             if (!pStatus.equals("completed")){
                 System.out.println("print modelid in getpurchaseid" + purchaseID);
                 alc.add(purchaseID);
                 String type = p.getType();
                 alc.add(type);
                 alc.add(pStatus);
-                Date date = p.getPurchaseDate();
-                Time time = p.getPurchaseTime();
+                String date = p.getPurchaseDate();  // date changed to string
+                String time = p.getPurchaseTime();  // time changed to string
                 alc.add(date);
                 alc.add(time);
             }   
@@ -99,13 +99,13 @@ public List<ArrayList> viewUncompletedPurchaseOrderList(Long userID) {
             PurchaseOrderEntity p = (PurchaseOrderEntity)it1.next();
             alc.add(purchaseID);
             String status = p.getStatus();
-            Date date = p.getPurchaseDate();
-            Time time = p.getPurchaseTime();
+            String date = p.getPurchaseDate(); //date changed to string
+            String time = p.getPurchaseTime();   //time changed to string
             double cost = p.getCost();
             Long sendFrom = p.getSendFrom();
-            Long sentTo = p.getSentTo();
+            Long sentTo = p.getSendTo();
             String type = p.getType();
-            int qty = p.getQuantity();
+            List qty = p.getQuantity();
             alc.add(type);
             alc.add(status);
             alc.add(date);
@@ -114,12 +114,12 @@ public List<ArrayList> viewUncompletedPurchaseOrderList(Long userID) {
             alc.add(sendFrom);
             alc.add(sentTo);
             alc.add(qty);
-            Set<FinishedGoodEntity> finishedGoods = p.getFinishedGoods();
+            List<FinishedGoodEntity> finishedGoods = p.getFinishedGoods();
             Iterator it2 = finishedGoods.iterator();
             while(it2.hasNext()) {
                 
             }    
-            Set<FinishedGoodEntity> rawMats = p.getFinishedGoods();
+            List<FinishedGoodEntity> rawMats = p.getFinishedGoods();
             Iterator it3 = finishedGoods.iterator();
             while(it3.hasNext()) {
                 
