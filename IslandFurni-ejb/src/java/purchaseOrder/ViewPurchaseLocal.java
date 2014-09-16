@@ -15,7 +15,7 @@ import javax.ejb.Local;
  * @author Liwei__xD
  */
 @Local
-interface ViewPurchaseLocal {
+public interface ViewPurchaseLocal {
     public List<ArrayList> viewUncompletedPurchaseOrderList(Long userID);
     public List<ArrayList> viewCompletedPurchaseOrderList(Long userID);
     public List<ArrayList> viewPurchaseOrderDetails(String purchaseID);
