@@ -49,7 +49,13 @@ public class ManuFacEntity implements Serializable {
     
     public ManuFacEntity() {
     }
-
+    
+    public ManuFacEntity(String country, List goodsQty, List partsQty) {
+        this.country = country;
+        this.goodsQty = goodsQty;
+        this.partsQty = partsQty;
+    }
+    
     public Long getManuFacID() {
         return manuFacID;
     }

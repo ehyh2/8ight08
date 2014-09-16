@@ -4,8 +4,9 @@
  * and open the template in the editor.
  */
 
-package bean;
+package manuFac;
 
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -15,6 +16,6 @@ import javax.ejb.Local;
 @Local
 public interface ManuBeanLocal {
     
-    public boolean addMF(String country);
+    public boolean addMF(String country, List goodsQty, List partsQty);
     public boolean delMF(Long mfID);
 }

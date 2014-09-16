@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package bean;
+package manuFac;
 
 import entity.ManuFacEntity;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -22,9 +23,9 @@ public class ManuBean implements ManuBeanLocal {
 
 
     @Override
-    public boolean addMF(String country) {
-        ManuFacEntity manuFacil = new ManuFacEntity(country);
-        manuFacil.setCountry(country);
+    public boolean addMF(String country, List goodsQty, List partsQty) {
+        ManuFacEntity manuFacil = new ManuFacEntity(country, goodsQty, partsQty);
+        //manuFacil.setCountry(country);
         em.persist(manuFacil);
         return true;
     }

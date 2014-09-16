@@ -5,8 +5,9 @@
  */
 package ifs.manufact.bean;
 
-import bean.ManuBeanLocal;
+import manuFac.ManuBeanLocal;
 import java.io.Serializable;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -29,6 +30,8 @@ public class MFManagerBean implements Serializable {
     private String country;
     private String message;
     private Long mfID;
+    private List goodsQty;
+    private List partsQty;
 
     /**
      * Creates a new instance of MFManagerBean
@@ -57,6 +60,22 @@ public class MFManagerBean implements Serializable {
         this.mfID = mfID;
     }
 
+    public List getGoodsQty() {
+        return goodsQty;
+    }
+
+    public void setGoodsQty(List goodsQty) {
+        this.goodsQty = goodsQty;
+    }
+
+    public List getPartsQty() {
+        return partsQty;
+    }
+
+    public void setPartsQty(List partsQty) {
+        this.partsQty = partsQty;
+    }
+
     public String getMessage() {
         return message;
     }
@@ -67,7 +86,7 @@ public class MFManagerBean implements Serializable {
 
     public void saveNewMF(ActionEvent event) {
 
-        boolean addStatus = manuBean.addMF(country);
+        boolean addStatus = manuBean.addMF(country, goodsQty, partsQty);
         if (addStatus) {
             message = "Yay! You got it!";
             //invalidate user session
