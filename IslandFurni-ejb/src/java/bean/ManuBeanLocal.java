@@ -13,7 +13,8 @@ import javax.ejb.Local;
  * @author User
  */
 @Local
-public interface ManuBeanRemote {
+public interface ManuBeanLocal {
     
     public boolean addMF(String country);
+    public boolean delMF(Long mfID);
 }

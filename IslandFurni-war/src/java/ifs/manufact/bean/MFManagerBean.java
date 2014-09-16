@@ -5,28 +5,30 @@
  */
 package ifs.manufact.bean;
 
-import bean.ManuBean;
+import bean.ManuBeanLocal;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Esther Hong
  */
-@ManagedBean
+@ManagedBean(name = "mfManagerBean")
 @SessionScoped
 public class MFManagerBean implements Serializable {
 
     @EJB
-    private ManuBean manuBean;
+    private ManuBeanLocal manuBean;
 
     private String country;
     private String message;
+    private Long mfID;
 
     /**
      * Creates a new instance of MFManagerBean
@@ -47,6 +49,14 @@ public class MFManagerBean implements Serializable {
         this.country = country;
     }
 
+    public Long getMfID() {
+        return mfID;
+    }
+
+    public void setMfID(Long mfID) {
+        this.mfID = mfID;
+    }
+
     public String getMessage() {
         return message;
     }
@@ -55,20 +65,38 @@ public class MFManagerBean implements Serializable {
         this.message = message;
     }
 
-    public void saveNewMF(String country) {
+    public void saveNewMF(ActionEvent event) {
 
         boolean addStatus = manuBean.addMF(country);
-        if (country != null) {
+        if (addStatus) {
+            message = "Yay! You got it!";
             //invalidate user session
             FacesContext context = FacesContext.getCurrentInstance();
             HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
             session.invalidate();
 
-            message = "Yay! You got it!";
         } else {
 
             // including HTML requires that you set escape="false" in view
             message = "<p>Sorry, " + country + " not added.</p>";
+
+        }
+    }
+
+    public void delMF(ActionEvent event) {
+
+        boolean delStatus = manuBean.delMF(mfID);
+        if (delStatus) {
+            message = "Yay! You got it!";
+            //invalidate user session
+            FacesContext context = FacesContext.getCurrentInstance();
+            HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
+            session.invalidate();
+
+        } else {
+
+            // including HTML requires that you set escape="false" in view
+            message = "<p>Sorry, " + country + " not deleted.</p>";
 
         }
 

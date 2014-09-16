@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
  * @author User
  */
 @Stateless
-public class ManuBean implements ManuBeanRemote {
+public class ManuBean implements ManuBeanLocal {
 
     @PersistenceContext
     private EntityManager em;
@@ -24,16 +24,22 @@ public class ManuBean implements ManuBeanRemote {
     @Override
     public boolean addMF(String country) {
         ManuFacEntity manuFacil = new ManuFacEntity(country);
-
-        // ManuFacil found = em.find(ManuFacil.class, country);
-        //if (found == null) {
-
+        manuFacil.setCountry(country);
         em.persist(manuFacil);
         return true;
-        /*}
-         else {
-         System.out.println("MF exists.");
-         return false;
-         }*/
+    }
+    
+    @Override
+    public boolean delMF(Long mfID) {
+        ManuFacEntity manuFacil = em.find(ManuFacEntity.class, mfID);
+        //if (manuFacil.getFinishedGoods() == null)
+        //if (manuFacil.getRawMats() == null)
+        //if (manuFacil.getSuppliers() == null)
+        if (manuFacil != null) {
+            em.remove(manuFacil);
+            return true;
+        } else {
+            return false;
+        }
     }
 }

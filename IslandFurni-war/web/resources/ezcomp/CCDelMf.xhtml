@@ -12,12 +12,12 @@
     <!-- IMPLEMENTATION -->
     <cc:implementation>
         <f:view>
-            <h:form id="addNewMFForm">
+            <h:form id="delMFForm">
                 <h2><h:outputLabel value="#{cc.attrs.formName}" /></h2>
-                <h:outputText style="font-weight: bold" value="Country: " />
-                <h:inputText required="true" requiredMessage="Field is required." id="country" value="#{mfManagerBean.country}">
+                <h:outputText style="font-weight: bold" value="Manufacturing Facility ID " />
+                <h:inputText required="true" requiredMessage="Field is required." id="mfID" value="#{mfManagerBean.mfID}">
                 </h:inputText>
-                <h:commandButton action="savemf.xhtml" value="Save New MF" actionListener="#{mfManagerBean.saveNewMF(country)}" />
+                <h:commandButton action="index.xhtml" value="Delete MF" actionListener="#{mfManagerBean.delMF}" />
             </h:form>
         </f:view>
     </cc:implementation>
