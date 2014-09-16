@@ -33,7 +33,7 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
 public List<ArrayList> viewUncompletedPurchaseOrderList(Long userID) {
 //displays all the purchase orders of the userID that are not completed
         List<ArrayList> al = new ArrayList();
-        Query query1 = em.createQuery("SELECT p FROM PurchaseEntity WHERE p.sendFrom =:second");
+        Query query1 = em.createQuery("SELECT p FROM PurchaseOrderEntity WHERE p.sendFrom =:second");
         query1.setParameter("second", userID);
         List results1 = query1.getResultList();
         Iterator it1 = results1.iterator();
