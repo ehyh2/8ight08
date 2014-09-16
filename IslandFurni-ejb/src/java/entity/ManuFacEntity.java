@@ -7,14 +7,17 @@
 package entity;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -25,58 +28,34 @@ public class ManuFacEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long manuFacID;
     private String country;
+    private List goodsQty; //the quantity of finished goods
+    private List partsQty;
     
-    @ManyToMany
-    @JoinTable(name="ManuFacEntity_SupplierEntity")
-    private Set<SupplierEntity> suppliers = new HashSet<SupplierEntity>();
+    @OneToMany(cascade={CascadeType.PERSIST})
+    private List<SupplierEntity> suppliers = new ArrayList<SupplierEntity>();        
     
-    @ManyToMany
+    @ManyToMany(cascade={CascadeType.ALL})
     @JoinTable(name="ManuFacEntity_RawMaterialEntity")
-    private Set<RawMaterialEntity> rawMats = new HashSet<RawMaterialEntity>();
+    private List<RawMaterialEntity> parts = new ArrayList<>();        
     
-    @ManyToMany
+    @ManyToMany(cascade={CascadeType.ALL})
     @JoinTable(name="ManuFacEntity_FinishedGoodEntity")
-    private Set<FinishedGoodEntity> finishedGoods = new HashSet<FinishedGoodEntity>();
+    private List<FinishedGoodEntity> finishedGoods = new ArrayList<>();        
 
-    public Set<FinishedGoodEntity> getFinishedGoods() {
-        return finishedGoods;
-    }
-
-    public void setFinishedGoods(Set<FinishedGoodEntity> finishedGoods) {
-        this.finishedGoods = finishedGoods;
-    }
-
-    public Set<RawMaterialEntity> getRawMats() {
-        return rawMats;
-    }
-
-    public void setRawMats(Set<RawMaterialEntity> rawMats) {
-        this.rawMats = rawMats;
-    }
+    @OneToMany(cascade={CascadeType.ALL}, mappedBy="manuFac")
+    private List<PurchaseOrderEntity> purchaseOrders = new ArrayList<PurchaseOrderEntity>();
     
     public ManuFacEntity() {
     }
 
-    public ManuFacEntity(String country) {
-        this.country = country;
-        //this.userName = userName;
-        //this.password = password;
-    }
-    
-    public void create (String country) {
-        this.setCountry(country);
-       //this.setPassword(password);
-        //this.setCountry(country);
+    public Long getManuFacID() {
+        return manuFacID;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public void setManuFacID(Long manuFacID) {
+        this.manuFacID = manuFacID;
     }
 
     public String getCountry() {
@@ -87,19 +66,58 @@ public class ManuFacEntity implements Serializable {
         this.country = country;
     }
 
-    public Set<SupplierEntity> getSuppliers() {
+    public List getGoodsQty() {
+        return goodsQty;
+    }
+
+    public void setGoodsQty(List goodsQty) {
+        this.goodsQty = goodsQty;
+    }
+
+    public List getPartsQty() {
+        return partsQty;
+    }
+
+    public void setPartsQty(List partsQty) {
+        this.partsQty = partsQty;
+    }
+
+    public List<SupplierEntity> getSuppliers() {
         return suppliers;
     }
 
-    public void setSuppliers(Set<SupplierEntity> suppliers) {
+    public void setSuppliers(List<SupplierEntity> suppliers) {
         this.suppliers = suppliers;
     }
 
+    public List<RawMaterialEntity> getParts() {
+        return parts;
+    }
+
+    public void setParts(List<RawMaterialEntity> parts) {
+        this.parts = parts;
+    }
+
+    public List<FinishedGoodEntity> getFinishedGoods() {
+        return finishedGoods;
+    }
+
+    public void setFinishedGoods(List<FinishedGoodEntity> finishedGoods) {
+        this.finishedGoods = finishedGoods;
+    }
+
+    public List<PurchaseOrderEntity> getPurchaseOrders() {
+        return purchaseOrders;
+    }
+
+    public void setPurchaseOrders(List<PurchaseOrderEntity> purchaseOrders) {
+        this.purchaseOrders = purchaseOrders;
+    }
     
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (manuFacID != null ? manuFacID.hashCode() : 0);
         return hash;
     }
 
@@ -110,7 +128,7 @@ public class ManuFacEntity implements Serializable {
             return false;
         }
         ManuFacEntity other = (ManuFacEntity) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.manuFacID == null && other.manuFacID != null) || (this.manuFacID != null && !this.manuFacID.equals(other.manuFacID))) {
             return false;
         }
         return true;
@@ -118,7 +136,7 @@ public class ManuFacEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.ManuFacEntity[ id=" + id + " ]";
+        return "entity.ManuFacEntity[ id=" + manuFacID + " ]";
     }
     
 }
