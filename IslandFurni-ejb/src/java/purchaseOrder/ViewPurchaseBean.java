@@ -90,7 +90,7 @@ public List<ArrayList> viewUncompletedPurchaseOrderList(Long userID) {
 
     public List<ArrayList> viewPurchaseOrderDetails(String purchaseID) {
         List<ArrayList> al = new ArrayList();
-        Query query1 = em.createQuery("SELECT p FROM PurchaseEntity WHERE p.id =:second");
+        Query query1 = em.createQuery("SELECT p FROM PurchaseOrderEntity WHERE p.id =:second");
         query1.setParameter("second", purchaseID);
         List results1 = query1.getResultList();
         Iterator it1 = results1.iterator();
@@ -129,7 +129,7 @@ public List<ArrayList> viewUncompletedPurchaseOrderList(Long userID) {
     }
 
     public void setStatusPending(Long purchaseID) {
-        Query query1 = em.createQuery("SELECT p FROM PurchaseEntity WHERE p.id =:second");
+        Query query1 = em.createQuery("SELECT p FROM PurchaseOrderEntity WHERE p.id =:second");
         query1.setParameter("second", purchaseID);
         List results1 = query1.getResultList();
         Iterator it1 = results1.iterator();
@@ -139,7 +139,7 @@ public List<ArrayList> viewUncompletedPurchaseOrderList(Long userID) {
     }
     
     public void setStatusSent(Long purchaseID) {
-        Query query1 = em.createQuery("SELECT p FROM PurchaseEntity WHERE p.id =:second");
+        Query query1 = em.createQuery("SELECT p FROM PurchaseOrderEntity WHERE p.id =:second");
         query1.setParameter("second", purchaseID);
         List results1 = query1.getResultList();
         Iterator it1 = results1.iterator();
@@ -149,7 +149,7 @@ public List<ArrayList> viewUncompletedPurchaseOrderList(Long userID) {
     }
     
     public void setStatusReceived(Long purchaseID) {
-        Query query1 = em.createQuery("SELECT p FROM PurchaseEntity WHERE p.id =:second");
+        Query query1 = em.createQuery("SELECT p FROM PurchaseOrderEntity WHERE p.id =:second");
         query1.setParameter("second", purchaseID);
         List results1 = query1.getResultList();
         Iterator it1 = results1.iterator();
@@ -159,7 +159,7 @@ public List<ArrayList> viewUncompletedPurchaseOrderList(Long userID) {
     }
     
     public void setStatusInProgress(Long purchaseID) {
-        Query query1 = em.createQuery("SELECT p FROM PurchaseEntity WHERE p.id =:second");
+        Query query1 = em.createQuery("SELECT p FROM PurchaseOrderEntity WHERE p.id =:second");
         query1.setParameter("second", purchaseID);
         List results1 = query1.getResultList();
         Iterator it1 = results1.iterator();
@@ -169,7 +169,7 @@ public List<ArrayList> viewUncompletedPurchaseOrderList(Long userID) {
     }
     
     public void setStatusCompleted(Long purchaseID) {
-        Query query1 = em.createQuery("SELECT p FROM PurchaseEntity WHERE p.id =:second");
+        Query query1 = em.createQuery("SELECT p FROM PurchaseOrderEntity WHERE p.id =:second");
         query1.setParameter("second", purchaseID);
         List results1 = query1.getResultList();
         Iterator it1 = results1.iterator();
