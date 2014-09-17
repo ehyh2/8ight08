@@ -8,6 +8,8 @@ package purchaseOrder;
   
 import entity.FinishedGoodEntity;
 import entity.PurchaseOrderEntity;
+import entity.RawMaterialEntity;
+import entity.RetailProductEntity;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,10 +31,207 @@ import javax.persistence.Query;
 public class ViewPurchaseBean implements ViewPurchaseLocal {
     @PersistenceContext
     private EntityManager em;
+    private PurchaseOrderEntity purchaseOrderEntity;
 
-@Override
-public List<ArrayList> viewUncompletedPurchaseOrderList(Long userID) {
-//displays all the purchase orders of the userID that are not completed
+    //for purchase order of raw materials, retail products, finished goods
+    @Override
+    public Long createPurchaseOrder(String type, Long sendFrom, Long sendTo) {
+        try {
+            purchaseOrderEntity = new PurchaseOrderEntity();
+            
+            SimpleDateFormat gmtDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            gmtDateFormat.setTimeZone(TimeZone.getTimeZone("Singapore"));
+            String dateTime = gmtDateFormat.format(new Date());
+            String[] splited = dateTime.split(" ");
+            String date = splited[0];
+            String time = splited[1];
+            
+            String status = purchaseOrderEntity.getStatus();
+            purchaseOrderEntity.create(type, date, time, sendFrom, sendTo, status);
+            em.persist(purchaseOrderEntity);
+        } catch (Exception ex) {
+            System.out.println("\nException Error: " + ex.getMessage());
+        }
+        return purchaseOrderEntity.getPurchaseID();
+    }
+    
+    @Override
+    public void deletePurchaseOrder(Long purchaseID) {
+        Query query = em.createQuery("SELECT po FROM PurchaseOrderEntity WHERE po.purchaseID =:first");
+        query.setParameter("first", purchaseID);
+        PurchaseOrderEntity purchaseOrder = (PurchaseOrderEntity) query.getSingleResult();
+        em.remove(purchaseOrder);
+    }
+    
+    @Override
+    public boolean addItemToPurchaseOrder(Long purchaseID, Long partID) {
+        Query query1 = em.createQuery("SELECT p FROM PurchaseOrderEntity WHERE r.purchaseID =:first");
+        query1.setParameter("first", purchaseID);
+        List result1 = query1.getResultList();
+        Iterator it2 = result1.iterator(); 
+        PurchaseOrderEntity p = (PurchaseOrderEntity)it2.next();
+        
+        String type = p.getType();
+        
+        if (type.equals("Raw Material")) {
+            Query query2 = em.createQuery("SELECT r FROM RawMaterialEntity WHERE r.partID =:first");
+            query2.setParameter("first", partID);
+            List result2 = query2.getResultList();
+            Iterator it = result2.iterator(); 
+            RawMaterialEntity r = (RawMaterialEntity)it.next();
+            
+            if (!result1.isEmpty() && !result2.isEmpty()) {
+                List allParts = p.getParts();
+                allParts.add(r);
+                p.setParts(allParts);
+                em.persist(p);
+                return true;
+            }
+        } else if (type.equals("Finished Good")) {
+            Query query2 = em.createQuery("SELECT f FROM FinishedGoodEntity WHERE f.modelID =:first");
+            query2.setParameter("first", partID);
+            List result2 = query2.getResultList();
+            Iterator it = result2.iterator(); 
+            FinishedGoodEntity f = (FinishedGoodEntity)it.next();
+            
+            if (!result1.isEmpty() && !result2.isEmpty()) {
+                List allGoods = p.getFinishedGoods();
+                allGoods.add(f);
+                p.setParts(allGoods);
+                em.persist(p);
+                return true;
+            }
+        } else if (type.equals("Retail Product")) {
+            Query query2 = em.createQuery("SELECT r FROM RetailProductEntity WHERE r.modelID =:first");
+            query2.setParameter("first", partID);
+            List result2 = query2.getResultList();
+            Iterator it = result2.iterator(); 
+            RetailProductEntity r = (RetailProductEntity)it.next();
+            
+            if (!result1.isEmpty() && !result2.isEmpty()) {
+                List allRetailPdts = p.getRetailProducts();
+                allRetailPdts.add(r);
+                p.setParts(allRetailPdts);
+                em.persist(p);
+                return true;
+            } 
+        } return false;  
+    }
+
+    @Override
+    public boolean delItemFromPurchaseOrder(Long purchaseID, Long partID) {
+        Query query1 = em.createQuery("SELECT p FROM PurchaseOrderEntity WHERE p.purchaseID =:first");
+        query1.setParameter("first", purchaseID);
+        List result1 = query1.getResultList();
+        Iterator it = result1.iterator(); 
+        PurchaseOrderEntity p = (PurchaseOrderEntity)it.next();
+        
+        String type = p.getType();
+        
+        if (type.equals("Raw Material")) {
+            Query query2 = em.createQuery("SELECT r FROM RawMaterialEntity WHERE r.partID =:first");
+            query2.setParameter("first", partID);
+            List result2 = query2.getResultList();
+            Iterator it2 = result2.iterator();
+            RawMaterialEntity r = (RawMaterialEntity)it2.next();
+        
+            if (!result1.isEmpty() && !result2.isEmpty()) {
+                List allParts = p.getParts();
+                allParts.remove(r);
+                p.setParts(allParts);
+                em.persist(p);
+                return true;
+            }
+        } else if (type.equals("Finished Good")) {
+            Query query2 = em.createQuery("SELECT r FROM FinishedGoodEntity WHERE r.modelID =:first");
+            query2.setParameter("first", partID);
+            List result2 = query2.getResultList();
+            Iterator it2 = result2.iterator();
+            FinishedGoodEntity f = (FinishedGoodEntity)it2.next();
+        
+            if (!result1.isEmpty() && !result2.isEmpty()) {
+                List allGoods = p.getFinishedGoods();
+                allGoods.remove(f);
+                p.setParts(allGoods);
+                em.persist(p);
+                return true;
+            }
+        } else if (type.equals("Retail Product")) {
+            Query query2 = em.createQuery("SELECT r FROM RetailProductEntity WHERE r.modelID =:first");
+            query2.setParameter("first", partID);
+            List result2 = query2.getResultList();
+            Iterator it2 = result2.iterator();
+            RetailProductEntity r = (RetailProductEntity)it2.next();
+        
+            if (!result1.isEmpty() && !result2.isEmpty()) {
+                List allRetailPdts = p.getRetailProducts();
+                allRetailPdts.remove(r);
+                p.setParts(allRetailPdts);
+                em.persist(p);
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    @Override
+    public boolean editQtyOfPurchaseOrder(Long purchaseID, Long partID, int quantity) {
+        Query query1 = em.createQuery("SELECT p FROM PurchaseOrderEntity p WHERE p.purchaseID=:purchaseID");
+        query1.setParameter("purchaseID", purchaseID);
+        PurchaseOrderEntity p = (PurchaseOrderEntity) query1.getSingleResult();
+            
+        String type = p.getType();
+        //get list of parts & qty in a purchase order
+        List qty = p.getQuantity();
+        
+        if (type.equals("Raw Material")) {
+            if (p != null) {
+                List parts = p.getParts();
+                // return index of partID & its quantity
+                int partQtyIndex = parts.indexOf(partID);
+                // set updated quantity
+                qty.set(partQtyIndex, quantity);
+                em.refresh(p);
+                return true;
+            } 
+        } else if (type.equals("Finished Good")) {
+            if (p != null) {
+                List finishedGoods = p.getFinishedGoods();
+                // return index of partID & its quantity
+                int partQtyIndex = finishedGoods.indexOf(partID);
+                // set updated quantity
+                qty.set(partQtyIndex, quantity);
+                em.refresh(p);
+                return true;
+            } 
+        } else if (type.equals("Retail Product")) {
+            if (p != null) {
+                List retailPdts = p.getRetailProducts();
+                // return index of partID & its quantity
+                int partQtyIndex = retailPdts.indexOf(partID);
+                // set updated quantity
+                qty.set(partQtyIndex, quantity);
+                em.refresh(p);
+                return true;
+            } 
+        } 
+        return false;
+    }
+  
+    /*public void sendRawMaterialPurchaseOrder(Long purchaseID, Long sendTo) {
+        Query query1 = em.createQuery("SELECT p FROM PurchaseOrderEntity WHERE p.purchaseID =:first");
+        query1.setParameter("first", purchaseID);
+        PurchaseOrderEntity po = (PurchaseOrderEntity) query1.getSingleResult();
+        
+        Query query2 = em.createQuery("SELECT s FROM SupplierEntity WHERE s.sendTo =:first");
+        query2.setParameter("first", sendTo);
+        SupplierEntity supplier = (SupplierEntity) query2.getSingleResult();
+    }*/
+
+    
+    @Override
+    public List<ArrayList> viewUncompletedPurchaseOrderList(Long userID) {
+    //displays all the purchase orders of the userID that are not completed
         List<ArrayList> al = new ArrayList();
         Query query1 = em.createQuery("SELECT p FROM PurchaseOrderEntity WHERE p.sendFrom =:second");
         query1.setParameter("second", userID);
@@ -86,7 +285,6 @@ public List<ArrayList> viewUncompletedPurchaseOrderList(Long userID) {
         System.out.println("Testing");
         return al;
         
-
     }
     @Override
     public List<ArrayList> viewPurchaseOrderDetails(String purchaseID) {
@@ -182,27 +380,5 @@ public List<ArrayList> viewUncompletedPurchaseOrderList(Long userID) {
         PurchaseOrderEntity p = (PurchaseOrderEntity)it1.next();
         p.setStatus("completed");
         em.persist(p);
-    }
-    
-    @Override
-    public void createRawMaterialPurchaseOrder(String type, Long sendFrom, Long sendTo) {
-        try {
-            PurchaseOrderEntity purchaseOrderEntity = new PurchaseOrderEntity();
-            
-            SimpleDateFormat gmtDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            gmtDateFormat.setTimeZone(TimeZone.getTimeZone("Singapore"));
-            String dateTime = gmtDateFormat.format(new Date());
-            String[] splited = dateTime.split(" ");
-            String date = splited[0];
-            String time = splited[1];
-            
-            String status = purchaseOrderEntity.getStatus();
-            
-            purchaseOrderEntity.create(type, date, time, sendFrom, sendTo, status);
-            em.persist(purchaseOrderEntity);
-        } catch (Exception ex) {
-            System.out.println("\nException Error: " + ex.getMessage());
-        }
-        //return purchaseOrderEntity.getPurchaseID();
     }
 }
