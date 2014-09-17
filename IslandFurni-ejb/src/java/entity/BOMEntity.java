@@ -7,7 +7,9 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,11 +28,11 @@ public class BOMEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private int quantity;
+    private List<Integer> quantity = new ArrayList<Integer>();
     
     @ManyToMany
     @JoinTable(name="BOMEntity_RawMaterialEntity")
-    private Set<RawMaterialEntity> rawMats = new HashSet<RawMaterialEntity>();
+    private List<RawMaterialEntity> rawMats = new ArrayList<RawMaterialEntity>();
     
     public Long getId() {
         return id;
@@ -40,19 +42,19 @@ public class BOMEntity implements Serializable {
         this.id = id;
     }
 
-    public int getQuantity() {
+    public List getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(List quantity) {
         this.quantity = quantity;
     }
 
-    public Set<RawMaterialEntity> getRawMats() {
+    public List<RawMaterialEntity> getRawMats() {
         return rawMats;
     }
 
-    public void setRawMats(Set<RawMaterialEntity> rawMats) {
+    public void setRawMats(List<RawMaterialEntity> rawMats) {
         this.rawMats = rawMats;
     }
 
