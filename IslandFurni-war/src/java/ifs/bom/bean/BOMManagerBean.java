@@ -28,12 +28,11 @@ public class BOMManagerBean implements Serializable {
     @EJB
     private BomBeanLocal bomBean;
     
-    private Long rm;
-    private int qty;
-    private List<Long> rmList;
-    private List<Integer> qtyList;
+    private String rm;
+    private String qty;
+    private List<String> rmList;
+    private List<String> qtyList;
     private Long id;
-    private int newQty;
     private String message = null;
 
     /**
@@ -53,36 +52,36 @@ public class BOMManagerBean implements Serializable {
         this.message = message;
     }
 
-    public Long getRm() {
+    public String getRm() {
         return rm;
     }
 
-    public void setRm(Long rm) {
+    public void setRm(String rm) {
         this.rm = rm;
     }
 
-    public int getQty() {
+    public String getQty() {
         return qty;
     }
 
-    public void setQty(int qty) {
+    public void setQty(String qty) {
         this.qty = qty;
     }
 
-    public List<Long> getRmList() {
+    public List<String> getRmList() {
         return rmList;
     }
 
-    public void setRmList(List<Long> rmList) {
+    public void setRmList(List<String> rmList) {
         this.rmList = rmList;
         //rmList.add(rm);
     }
 
-    public List<Integer> getQtyList() {
+    public List<String> getQtyList() {
         return qtyList;
     }
 
-    public void setQtyList(List<Integer> qtyList) {
+    public void setQtyList(List<String> qtyList) {
         this.qtyList = qtyList;
         //qtyList.add(qty);
     }
@@ -96,15 +95,6 @@ public class BOMManagerBean implements Serializable {
         this.id = id;
     }
 
-    public int getNewQty() {
-        return newQty;
-    }
-
-    public void setNewQty(int newQty) {
-        this.newQty = newQty;
-    }
-    
-    
     public void saveBom(ActionEvent event) {
 
         boolean saveStatus = bomBean.createBOM(rmList, qtyList);
