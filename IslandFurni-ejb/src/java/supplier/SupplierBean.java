@@ -86,6 +86,11 @@ public class SupplierBean implements SupplierBeanLocal {
     public boolean updateSupplierContractEndDate(Date contractEndDate) {
         return false;
     }
+
+    @Override
+    public boolean setSupplierPassword(Long supplierID) {
+        return false;
+    }
     
     
 }

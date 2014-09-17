@@ -20,6 +20,8 @@ public interface SupplierBeanLocal {
 
     public List<ArrayList> viewListofSupplier();
     //returns list of arraylist w supplierID
+    //for global to view and select supplier to setPassword for the chosen supplier
+    //for manufacturing m to view and select supplier to view more details
 
     public boolean delSupplier(Long ssID);
 
@@ -46,6 +48,9 @@ public interface SupplierBeanLocal {
 
     boolean sendSupplierListToGlobal();
     // 
- 
+
+    boolean setSupplierPassword(Long supplierID);
+    // for global to set the supplier password when they click on the supplier in the list of
+    //supplierID
     
 }
