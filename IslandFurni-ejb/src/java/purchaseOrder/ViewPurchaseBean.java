@@ -218,6 +218,17 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
         return false;
     }
   
+    /*public void sendRawMaterialPurchaseOrder(Long purchaseID, Long sendTo) {
+        Query query1 = em.createQuery("SELECT p FROM PurchaseOrderEntity WHERE p.purchaseID =:first");
+        query1.setParameter("first", purchaseID);
+        PurchaseOrderEntity po = (PurchaseOrderEntity) query1.getSingleResult();
+        
+        Query query2 = em.createQuery("SELECT s FROM SupplierEntity WHERE s.sendTo =:first");
+        query2.setParameter("first", sendTo);
+        SupplierEntity supplier = (SupplierEntity) query2.getSingleResult();
+    }*/
+
+    
     @Override
     public List<ArrayList> viewUncompletedPurchaseOrderList(Long userID) {
     //displays all the purchase orders of the userID that are not completed
