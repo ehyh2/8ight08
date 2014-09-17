@@ -19,6 +19,13 @@
         </div>
         <div>
             <div id="left">
+
+                <h:form>
+                    <li><h:commandLink value="Home" action="index.xhtml?faces-redirect=true" /></li>
+                    <li><h:commandLink value="Login" action="login.xhtml?faces-redirect=true" /></li>
+                    <li><h:commandLink value="Add" action="addmf.xhtml?faces-redirect=true" /></li>
+                    <li><h:commandLink value="Delete" action="delmf.xhtml?faces-redirect=true" /></li>
+                </h:form>
                 <ui:insert name="left">Left</ui:insert>
             </div>
             <div id="content" class="left_content">

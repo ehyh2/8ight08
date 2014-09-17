@@ -34,6 +34,8 @@ public class BOMManagerBean implements Serializable {
     private List<String> qtyList;
     private Long id;
     private String message = null;
+    private List<String> bomList;
+    private List<String> filteredBomList;
 
     /**
      * Creates a new instance of BOMManagerBean
@@ -42,6 +44,22 @@ public class BOMManagerBean implements Serializable {
         qtyList = new ArrayList<>();
         rmList = new ArrayList<>();
         
+    }
+
+    public List<String> getFilteredBomList() {
+        return filteredBomList;
+    }
+
+    public void setFilteredBomList(List<String> filteredBomList) {
+        this.filteredBomList = filteredBomList;
+    }
+
+    public List<String> getBomList() {
+        return bomList;
+    }
+
+    public void setBomList(List<String> bomList) {
+        this.bomList = bomList;
     }
 
     public String getMessage() {
@@ -118,6 +136,37 @@ public class BOMManagerBean implements Serializable {
         rmList.add(rm);
         message = "Added";
        
+    }
+    
+    public void delBom(ActionEvent event) {
+        boolean delStatus = bomBean.deleteBOM(id);
+        if (delStatus) {
+            message = "BOM deleted.";
+            //invalidate user session
+            FacesContext context = FacesContext.getCurrentInstance();
+            HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
+            session.invalidate();
+
+        } else {
+
+            // including HTML requires that you set escape="false" in view
+            message = "<p>Sorry, BOM " + id + " not deleted.</p>";
+
+        }
+    }
+    
+    public void editBom(ActionEvent event) {
+        
+    }
+    
+    public void viewBom(ActionEvent event) {
+        bomList = bomBean.viewBOMList();
+        
+    }
+    
+    public void searchBom(ActionEvent event) {
+        filteredBomList = bomBean.searchBOM(id);
+        
     }
 
 }

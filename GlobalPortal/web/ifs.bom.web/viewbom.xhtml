@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../template/globalTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <ui:define name="left">
+        left
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form>
+            <!--View all BOM-->
+            <h:commandButton action="viewbom.xhtml" value="View All BOM" actionListener="#{bomManagerBean.viewBom}" />
+            
+            <!--Search for BOM-->
+            <h:outputText style="font-weight: bold" value="BOM ID: " />
+            <h:inputText required="true" requiredMessage="Field is required." id="id" value="#{bomManagerBean.id}">
+            </h:inputText>
+            <h:commandButton action="viewbom.xhtml" value="Search BOM" actionListener="#{bomManagerBean.searchBom}" />
+            <ui:repeat var="bom" value="#{bomManagerBean.bomList}">
+                <h:outputText style="font-weight: bold" value="BOM: " />
+                <li>#{bom}</li>
+            </ui:repeat>
+            <ui:repeat var="bom" value="#{bomManagerBean.filteredBomList}">
+                <h:outputText style="font-weight: bold" value="BOM: " />
+                <li>#{bom}</li>
+            </ui:repeat>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

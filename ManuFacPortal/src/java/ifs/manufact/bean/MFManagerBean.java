@@ -88,7 +88,7 @@ public class MFManagerBean implements Serializable {
 
         boolean addStatus = manuBean.addMF(country, goodsQty, partsQty);
         if (addStatus) {
-            message = "Yay! You got it!";
+            message = "Manufacturing Facility added.";
             //invalidate user session
             FacesContext context = FacesContext.getCurrentInstance();
             HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
@@ -97,7 +97,7 @@ public class MFManagerBean implements Serializable {
         } else {
 
             // including HTML requires that you set escape="false" in view
-            message = "<p>Sorry, " + country + " not added.</p>";
+            message = "<p>Sorry, Manufacturing Facility of " + country + " not added.</p>";
 
         }
     }
@@ -106,7 +106,7 @@ public class MFManagerBean implements Serializable {
 
         boolean delStatus = manuBean.delMF(mfID);
         if (delStatus) {
-            message = "Yay! You got it!";
+            message = "Manufacturing Facility deleted.";
             //invalidate user session
             FacesContext context = FacesContext.getCurrentInstance();
             HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
@@ -115,7 +115,7 @@ public class MFManagerBean implements Serializable {
         } else {
 
             // including HTML requires that you set escape="false" in view
-            message = "<p>Sorry, " + country + " not deleted.</p>";
+            message = "<p>Sorry, Manufacturing Facility of " + mfID + " not deleted.</p>";
 
         }
 
