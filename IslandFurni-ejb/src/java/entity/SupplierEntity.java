@@ -32,6 +32,7 @@ public class SupplierEntity implements Serializable {
     private String contactNo;
     private String country;
     private Date contractEndDate;
+    private String password;
     
     
     @ManyToMany(mappedBy="suppliers")
