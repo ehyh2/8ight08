@@ -8,7 +8,9 @@ package entity;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,14 +32,15 @@ public class SupplierEntity implements Serializable {
     private String contactNo;
     private String country;
     private Date contractEndDate;
+    private String password;
     
     
     @ManyToMany(mappedBy="suppliers")
-    private Set<ManuFacEntity> manufacils = new HashSet<ManuFacEntity>();
+    private List<ManuFacEntity> manufacils = new ArrayList<ManuFacEntity>();
     
     @ManyToMany
     @JoinTable(name="SupplierEntity_RawMaterialEntity")
-    private Set<RawMaterialEntity> rawMats = new HashSet<RawMaterialEntity>();
+    private List<RawMaterialEntity> rawMats = new ArrayList<RawMaterialEntity>();
 
     public SupplierEntity() {
     }
@@ -66,21 +69,22 @@ public class SupplierEntity implements Serializable {
         this.country = country;
     }
 
-    public Set<RawMaterialEntity> getRawMats() {
-        return rawMats;
-    }
-
-    public void setRawMats(Set<RawMaterialEntity> rawMats) {
-        this.rawMats = rawMats;
-    }
-
-    public Set<ManuFacEntity> getManufacils() {
+    public List<ManuFacEntity> getManufacils() {
         return manufacils;
     }
 
-    public void setManufacils(Set<ManuFacEntity> manufacils) {
+    public void setManufacils(List<ManuFacEntity> manufacils) {
         this.manufacils = manufacils;
     }
+
+    public List<RawMaterialEntity> getRawMats() {
+        return rawMats;
+    }
+
+    public void setRawMats(List<RawMaterialEntity> rawMats) {
+        this.rawMats = rawMats;
+    }
+
 
     public Long getId() {
         return id;
