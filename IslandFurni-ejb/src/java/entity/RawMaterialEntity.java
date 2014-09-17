@@ -7,10 +7,14 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 /**
  *
@@ -22,9 +26,12 @@ public class RawMaterialEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id; 
-    int leadTime;
-    int lotSize;
+    int leadTime;//change to list or not?
+    int lotSize;//change to list or not?
     int minQty;
+    
+    @ManyToMany(cascade={CascadeType.ALL}, mappedBy ="rawMats")
+    private List<SupplierEntity> suppliers = new ArrayList<SupplierEntity>();
     
     
     public Long getId() {
