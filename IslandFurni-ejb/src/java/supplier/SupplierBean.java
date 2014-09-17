@@ -9,6 +9,7 @@ package supplier;
 import entity.RawMaterialEntity;
 import entity.SupplierEntity;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -25,7 +26,7 @@ public class SupplierBean implements SupplierBeanLocal {
     @PersistenceContext
     private EntityManager em;
 
-    public boolean addSupplier(String country, List<Long> rawMats) {//query raw material entities and save into list
+    public boolean addSupplier(String country, List<ArrayList> rawMats, Date contractEndDate) {//query raw material entities and save into list
         List<RawMaterialEntity>  raw = new ArrayList<RawMaterialEntity>();
         Iterator it1 = rawMats.iterator();
         SupplierEntity supplier = new SupplierEntity();
@@ -55,4 +56,36 @@ public class SupplierBean implements SupplierBeanLocal {
             return false;
         }
     }
+
+    @Override
+    public List<ArrayList> viewListofSupplier() {
+        return null;
+    }
+
+    @Override
+    public List<ArrayList> viewSupplierDetails(Long supplierID) {
+        return null;
+    }
+
+    @Override
+    public boolean updateSupplierDetails(Long supplierID, String contactNo, String country) {
+        return false;
+    }
+
+    @Override
+    public boolean searchSupplierExist(Long supplierID) {
+        return false;
+    }
+
+    @Override
+    public boolean sendSupplierListToGlobal() {
+        return false;
+    }
+
+    @Override
+    public boolean updateSupplierContractEndDate(Date contractEndDate) {
+        return false;
+    }
+    
+    
 }
