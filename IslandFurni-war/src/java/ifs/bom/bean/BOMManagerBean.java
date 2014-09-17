@@ -5,7 +5,9 @@
  */
 package ifs.bom.bean;
 
+import bom.BomBeanLocal;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -24,18 +26,22 @@ import javax.servlet.http.HttpSession;
 public class BOMManagerBean implements Serializable {
 
     @EJB
-    private GlobalBeanLocal globalBean;
+    private BomBeanLocal bomBean;
     
     private Long rm;
     private int qty;
     private List<Long> rmList;
     private List<Integer> qtyList;
     private Long id;
+    private int newQty;
 
     /**
      * Creates a new instance of BOMManagerBean
      */
     public BOMManagerBean() {
+        qtyList = new ArrayList<>();
+        rmList = new ArrayList<>();
+        
     }
 
     public Long getRm() {
@@ -60,7 +66,7 @@ public class BOMManagerBean implements Serializable {
 
     public void setRmList(List<Long> rmList) {
         this.rmList = rmList;
-        //rmList.add(rm);
+        rmList.add(rm);
     }
 
     public List<Integer> getQtyList() {
@@ -69,7 +75,7 @@ public class BOMManagerBean implements Serializable {
 
     public void setQtyList(List<Integer> qtyList) {
         this.qtyList = qtyList;
-        //qtyList.add(qty);
+        qtyList.add(qty);
     }
 
 
@@ -80,11 +86,19 @@ public class BOMManagerBean implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-    
-    
-    public void saveBOM(ActionEvent event) {
 
-        boolean saveStatus = globalBean.createBOM(rmList, qtyList);
+    public int getNewQty() {
+        return newQty;
+    }
+
+    public void setNewQty(int newQty) {
+        this.newQty = newQty;
+    }
+    
+    
+    public void saveBom(ActionEvent event) {
+
+        boolean saveStatus = bomBean.createBOM(rmList, qtyList);
         if (saveStatus) {
             //invalidate user session
             FacesContext context = FacesContext.getCurrentInstance();
@@ -99,7 +113,7 @@ public class BOMManagerBean implements Serializable {
         }
     }
     
-    public void addToBOM(ActionEvent event) {
+    public void addToBom(ActionEvent event) {
         
         qtyList.add(qty);
         rmList.add(rm);
