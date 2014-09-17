@@ -28,7 +28,7 @@ public class LeadTimeLotSizeBean implements LeadTimeLotSizeBeanLocal {
     @Override
     public List<String> viewLeadTime() {
         List entityList = new ArrayList();
-        Query query = em.createQuery("SELECT rm FROM RawMaterialEntity");
+        Query query = em.createQuery("SELECT rm FROM RawMaterialEntity rm");
         List results = query.getResultList();
         if (!results.isEmpty()) {
             for (Object o : results) {
@@ -47,7 +47,7 @@ public class LeadTimeLotSizeBean implements LeadTimeLotSizeBeanLocal {
     @Override
     public List<String> viewLotSize() {
         List entityList = new ArrayList();
-        Query query = em.createQuery("SELECT rm FROM RawMaterialEntity");
+        Query query = em.createQuery("SELECT rm FROM RawMaterialEntity rm");
         List results = query.getResultList();
         if (!results.isEmpty()) {
             for (Object o : results) {
@@ -67,7 +67,7 @@ public class LeadTimeLotSizeBean implements LeadTimeLotSizeBeanLocal {
     public boolean addLeadTime(Long id, int leadTime){
         
         try{
-        Query query = em.createQuery("SELECT rm FROM RawMaterialEntity where rm.id=:first");
+        Query query = em.createQuery("SELECT rm FROM RawMaterialEntity rm where rm.id=:first");
         query.setParameter("first", id);
                 List results = query.getResultList();
                 if (!results.isEmpty()) {
@@ -94,7 +94,7 @@ public class LeadTimeLotSizeBean implements LeadTimeLotSizeBeanLocal {
     @Override
     public boolean editLeadTime(Long id, int leadTime){
         try{
-        Query query = em.createQuery("SELECT rm FROM RawMaterialEntity where rm.id=:first");
+        Query query = em.createQuery("SELECT rm FROM RawMaterialEntity rm where rm.id=:first");
         query.setParameter("first", id);
                 List results = query.getResultList();
                 if (!results.isEmpty()) {
@@ -123,7 +123,7 @@ public class LeadTimeLotSizeBean implements LeadTimeLotSizeBeanLocal {
     public boolean deleteLeadTime(Long id){
         
         try{
-        Query query = em.createQuery("SELECT rm FROM RawMaterialEntity where rm.id=:first");
+        Query query = em.createQuery("SELECT rm FROM RawMaterialEntity rm where rm.id=:first");
         query.setParameter("first", id);
                 List results = query.getResultList();
                 if (!results.isEmpty()) {
@@ -156,7 +156,7 @@ public class LeadTimeLotSizeBean implements LeadTimeLotSizeBeanLocal {
     public boolean addLotSize(Long id, int lotSize){
         
         try{
-        Query query = em.createQuery("SELECT rm FROM RawMaterialEntity where rm.id=:first");
+        Query query = em.createQuery("SELECT rm FROM RawMaterialEntity rm where rm.id=:first");
         query.setParameter("first", id);
                 List results = query.getResultList();
                 if (!results.isEmpty()) {
@@ -184,7 +184,7 @@ public class LeadTimeLotSizeBean implements LeadTimeLotSizeBeanLocal {
     public boolean editLotSize(Long id, int lotSize){
         
         try{
-        Query query = em.createQuery("SELECT rm FROM RawMaterialEntity where rm.id=:first");
+        Query query = em.createQuery("SELECT rm FROM RawMaterialEntity rm where rm.id=:first");
         query.setParameter("first", id);
                 List results = query.getResultList();
                 if (!results.isEmpty()) {
@@ -212,7 +212,7 @@ public class LeadTimeLotSizeBean implements LeadTimeLotSizeBeanLocal {
     public boolean deleteLotSize(Long id){
         
         try{
-        Query query = em.createQuery("SELECT rm FROM RawMaterialEntity where rm.id=:first");
+        Query query = em.createQuery("SELECT rm FROM RawMaterialEntity rm where rm.id=:first");
         query.setParameter("first", id);
                 List results = query.getResultList();
                 if (!results.isEmpty()) {
