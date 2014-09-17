@@ -64,17 +64,22 @@ public class LeadTimeLotSizeBean implements LeadTimeLotSizeBeanLocal {
     
     //for supplier to add lead time
     @Override
-    public boolean addLeadTime(Long id, int leadTime){
+    public boolean addLeadTime(String id, String leadTime, String supplierId){
+        
+        Long longId = Long.parseLong(id);
+        Long longSupplierId = Long.parseLong(supplierId);
+        int intLeadTime = Integer.parseInt(leadTime);
         
         try{
-        Query query = em.createQuery("SELECT rm FROM RawMaterialEntity rm where rm.id=:first");
-        query.setParameter("first", id);
+        Query query = em.createQuery("SELECT rm FROM RawMaterialEntity rm where rm.id=:first and rm.suppliers.id=:second");
+        query.setParameter("first", longId);
+        query.setParameter("second", longSupplierId);
                 List results = query.getResultList();
                 if (!results.isEmpty()) {
                     for (Object o : results) {
                         RawMaterialEntity raw;
                         raw = (RawMaterialEntity) o;
-                        raw.setLeadTime(leadTime);
+                        raw.setLeadTime(intLeadTime);
                         em.persist(raw);
                         return true;
                     }
@@ -92,16 +97,22 @@ public class LeadTimeLotSizeBean implements LeadTimeLotSizeBeanLocal {
     
     //for supplier to edit lead time
     @Override
-    public boolean editLeadTime(Long id, int leadTime){
+    public boolean editLeadTime(String id, String leadTime, String supplierId){
+        
+        Long longId = Long.parseLong(id);
+        Long longSupplierId = Long.parseLong(supplierId);
+        int intLeadTime = Integer.parseInt(leadTime);
+        
         try{
-        Query query = em.createQuery("SELECT rm FROM RawMaterialEntity rm where rm.id=:first");
-        query.setParameter("first", id);
+        Query query = em.createQuery("SELECT rm FROM RawMaterialEntity rm where rm.id=:first and rm.suppliers.id=:second");
+        query.setParameter("first", longId);
+        query.setParameter("second", longSupplierId);
                 List results = query.getResultList();
                 if (!results.isEmpty()) {
                     for (Object o : results) {
                         RawMaterialEntity raw;
                         raw = (RawMaterialEntity) o;
-                        raw.setLeadTime(leadTime);
+                        raw.setLeadTime(intLeadTime);
                         em.persist(raw);
                         return true;
                     }
@@ -110,7 +121,7 @@ public class LeadTimeLotSizeBean implements LeadTimeLotSizeBeanLocal {
                     return false;
                 }
         } catch(Exception e){
-            System.out.println("exception in edit lead time method");
+            System.out.println("exception in add lead time method");
             System.out.println(e.getMessage());
             return false;
         }
@@ -120,11 +131,15 @@ public class LeadTimeLotSizeBean implements LeadTimeLotSizeBeanLocal {
     
     //for supplier to delete lead time
     @Override
-    public boolean deleteLeadTime(Long id){
+    public boolean deleteLeadTime(String id, String supplierId){
+        
+        Long longId = Long.parseLong(id);
+        Long longSupplierId = Long.parseLong(supplierId);
         
         try{
-        Query query = em.createQuery("SELECT rm FROM RawMaterialEntity rm where rm.id=:first");
-        query.setParameter("first", id);
+        Query query = em.createQuery("SELECT rm FROM RawMaterialEntity rm where rm.id=:first and rm.suppliers.id=:second");
+        query.setParameter("first", longId);
+        query.setParameter("second", longSupplierId);
                 List results = query.getResultList();
                 if (!results.isEmpty()) {
                     for (Object o : results) {
@@ -148,22 +163,62 @@ public class LeadTimeLotSizeBean implements LeadTimeLotSizeBeanLocal {
     }
     
     //for supplier to view lead time
-    //public List<String> viewLeadTime(){
-    //}
+    @Override
+    public List<String> viewLeadTimeSupplier(String supplierId){
+        
+        Long longId = Long.parseLong(supplierId);
+        List<String> viewList = new ArrayList<String>();
+        
+        try {
+            Query query = em.createQuery("SELECT rm FROM RawMaterialEntity rm where rm.suppliers.id=:first ");
+            query.setParameter("first", longId);
+            List results = query.getResultList();
+            if (!results.isEmpty()) {
+                for (Object o : results) {
+                    RawMaterialEntity raw = (RawMaterialEntity) o;
+
+                    //to get the raw material details
+                    String result = new String();
+                    result = result + String.valueOf(raw.getId());
+
+                    //for (Object r : raw.getLeadTime()) {
+                        //int leadTime = (int) r;
+                        //result = result + "#" + String.valueOf(r);
+                    //}
+                    
+                    result = result + "#" + String.valueOf(raw.getLeadTime());
+                    viewList.add(result);
+                }
+            } else {
+                System.out.println("No lead time to view");
+            }
+        } catch (Exception e) {
+            System.out.println("exception in view lead time supplier method");
+            System.out.println(e.getMessage());
+        }
+        
+        return viewList;
+        
+    }
     
     //for supplier to add lot size
     @Override
-    public boolean addLotSize(Long id, int lotSize){
+    public boolean addLotSize(String id, String lotSize, String supplierId){
+        
+        Long longId = Long.parseLong(id);
+        Long longSupplierId = Long.parseLong(supplierId);
+        int intLotSize = Integer.parseInt(lotSize);
         
         try{
-        Query query = em.createQuery("SELECT rm FROM RawMaterialEntity rm where rm.id=:first");
-        query.setParameter("first", id);
+        Query query = em.createQuery("SELECT rm FROM RawMaterialEntity rm where rm.id=:first and rm.suppliers.id=:second");
+        query.setParameter("first", longId);
+        query.setParameter("second", longSupplierId);
                 List results = query.getResultList();
                 if (!results.isEmpty()) {
                     for (Object o : results) {
                         RawMaterialEntity raw;
                         raw = (RawMaterialEntity) o;
-                        raw.setLotSize(lotSize);
+                        raw.setLotSize(intLotSize);
                         em.persist(raw);
                         return true;
                     }
@@ -181,17 +236,22 @@ public class LeadTimeLotSizeBean implements LeadTimeLotSizeBeanLocal {
     
     //for supplier to edit lot size
     @Override
-    public boolean editLotSize(Long id, int lotSize){
+    public boolean editLotSize(String id, String lotSize, String supplierId){
+        
+         Long longId = Long.parseLong(id);
+        Long longSupplierId = Long.parseLong(supplierId);
+        int intLotSize = Integer.parseInt(lotSize);
         
         try{
-        Query query = em.createQuery("SELECT rm FROM RawMaterialEntity rm where rm.id=:first");
-        query.setParameter("first", id);
+        Query query = em.createQuery("SELECT rm FROM RawMaterialEntity rm where rm.id=:first and rm.suppliers.id=:second");
+        query.setParameter("first", longId);
+        query.setParameter("second", longSupplierId);
                 List results = query.getResultList();
                 if (!results.isEmpty()) {
                     for (Object o : results) {
                         RawMaterialEntity raw;
                         raw = (RawMaterialEntity) o;
-                        raw.setLotSize(lotSize);
+                        raw.setLotSize(intLotSize);
                         em.persist(raw);
                         return true;
                     }
@@ -209,11 +269,15 @@ public class LeadTimeLotSizeBean implements LeadTimeLotSizeBeanLocal {
     
     //for supplier to delete lot size
     @Override
-    public boolean deleteLotSize(Long id){
+    public boolean deleteLotSize(String id, String supplierId){
         
+        Long longId = Long.parseLong(id);
+        Long longSupplierId = Long.parseLong(supplierId);
+                
         try{
-        Query query = em.createQuery("SELECT rm FROM RawMaterialEntity rm where rm.id=:first");
-        query.setParameter("first", id);
+        Query query = em.createQuery("SELECT rm FROM RawMaterialEntity rm where rm.id=:first and rm.suppliers.id=:second");
+        query.setParameter("first", longId);
+        query.setParameter("second", longSupplierId);
                 List results = query.getResultList();
                 if (!results.isEmpty()) {
                     for (Object o : results) {
@@ -237,6 +301,40 @@ public class LeadTimeLotSizeBean implements LeadTimeLotSizeBeanLocal {
     }
     
     //for supplier to view lot size
-    //public List<String> viewLotSize(){
-    //}
+    @Override
+    public List<String> viewLotSizeSupplier(String supplierId){
+        Long longId = Long.parseLong(supplierId);
+        List<String> viewList = new ArrayList<String>();
+        
+        try {
+            Query query = em.createQuery("SELECT rm FROM RawMaterialEntity rm where rm.suppliers.id=:first");
+            query.setParameter("first", longId);
+            List results = query.getResultList();
+            if (!results.isEmpty()) {
+                for (Object o : results) {
+                    RawMaterialEntity raw = (RawMaterialEntity) o;
+
+                    //to get the raw material details
+                    String result = new String();
+                    result = result + String.valueOf(raw.getId());
+
+                    //for (Object r : raw.getLeadTime()) {
+                        //int leadTime = (int) r;
+                        //result = result + "#" + String.valueOf(r);
+                    //}
+                    
+                    result = result + "#" + String.valueOf(raw.getLotSize());
+                    viewList.add(result);
+                }
+            } else {
+                System.out.println("No lot size to view");
+            }
+        } catch (Exception e) {
+            System.out.println("exception in view lot size supplier method");
+            System.out.println(e.getMessage());
+        }
+        
+        return viewList;
+        
+    }
 }
