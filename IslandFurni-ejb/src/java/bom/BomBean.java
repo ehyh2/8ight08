@@ -26,16 +26,18 @@ public class BomBean implements BomBeanLocal {
 
     //for global hq to create bom
     @Override
-    public boolean createBOM(List<Long> rm, List<Integer> qty) {
+    public boolean createBOM(List<String> rm, List<String> qty) {
 
         List<RawMaterialEntity> rmlist = new ArrayList<RawMaterialEntity>();
+        List<Integer> qtylist = new ArrayList<Integer>();
         BOMEntity bom = new BOMEntity();
 
         try {
             //to get the list of raw materials
-            for (Long id : rm) {
+            for (String id : rm) {
+                Long longId = Long.parseLong(id);
                 Query query = em.createQuery("SELECT rm FROM RawMaterialEntity WHERE rm.id =:first");
-                query.setParameter("first", id);
+                query.setParameter("first", longId);
                 List results = query.getResultList();
                 if (!results.isEmpty()) {
                     for (Object o : results) {
@@ -48,10 +50,16 @@ public class BomBean implements BomBeanLocal {
                     return false;
                 }
             }
+            
+            //to get the list of quantity
+            for (String q : qty){
+                Integer quantity = Integer.parseInt(q);
+                qtylist.add(quantity);
+            }
 
             //create the bom
             bom.setRawMats(rmlist);
-            bom.setQuantity(qty);
+            bom.setQuantity(qtylist);
             em.persist(bom);
             return true;
         } catch (Exception e) {
