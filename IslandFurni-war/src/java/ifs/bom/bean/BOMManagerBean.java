@@ -34,6 +34,7 @@ public class BOMManagerBean implements Serializable {
     private List<Integer> qtyList;
     private Long id;
     private int newQty;
+    private String message = null;
 
     /**
      * Creates a new instance of BOMManagerBean
@@ -42,6 +43,14 @@ public class BOMManagerBean implements Serializable {
         qtyList = new ArrayList<>();
         rmList = new ArrayList<>();
         
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public Long getRm() {
@@ -66,7 +75,7 @@ public class BOMManagerBean implements Serializable {
 
     public void setRmList(List<Long> rmList) {
         this.rmList = rmList;
-        rmList.add(rm);
+        //rmList.add(rm);
     }
 
     public List<Integer> getQtyList() {
@@ -75,7 +84,7 @@ public class BOMManagerBean implements Serializable {
 
     public void setQtyList(List<Integer> qtyList) {
         this.qtyList = qtyList;
-        qtyList.add(qty);
+        //qtyList.add(qty);
     }
 
 
@@ -114,9 +123,10 @@ public class BOMManagerBean implements Serializable {
     }
     
     public void addToBom(ActionEvent event) {
-        
+        //int q = Integer.parseInt("qty");
         qtyList.add(qty);
         rmList.add(rm);
+        message = "Added";
        
     }
 

@@ -11,7 +11,29 @@
     </ui:define>
 
     <ui:define name="content">
-        <ez:CCAddBOMForm formName="Add BOM"/>
+        <h:form>
+            <h2><h:outputLabel value="Add BOM" /></h2>
+
+            <h:outputText style="font-weight: bold" value="Raw Material: " />
+            <h:inputText required="true" requiredMessage="Field is required." id="rm" value="#{bomManagerBean.rm}">
+            </h:inputText>
+            <h:outputText style="font-weight: bold" value="Quantity: " />
+            <h:inputText required="true" requiredMessage="Field is required." id="qty" value="#{bomManagerBean.qty}">
+            </h:inputText><br/><br/>
+
+            <ui:repeat var="rm" value="#{bomManagerBean.rmList}">
+                <h:outputText style="font-weight: bold" value="Raw Material ID: " />
+                <li>#{rm}</li>
+            </ui:repeat>
+            <ui:repeat var="qty" value="#{bomManagerBean.qtyList}">
+                <h:outputText style="font-weight: bold" value="Raw Material Quantity: " />
+                <li>#{qty}</li>
+            </ui:repeat>
+            <br/>
+            <h:commandButton action="addbom.xhtml" value="Add To BOM" actionListener="#{bomManagerBean.addToBom}" />
+            <h:outputText style="font-weight: bold" value="#{bomManagerBean.message} " /><br/>
+            <h:commandButton action="addbom.xhtml" value="Save BOM" actionListener="#{bomManagerBean.saveBom}" />
+        </h:form>
     </ui:define>
 
 </ui:composition>
