@@ -129,14 +129,13 @@ public class PurchaseOrderEntity implements Serializable {
     }
 
     public String getStatus() {
-        status = "Pending";
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
     }
-    
+     
     public List<RawMaterialEntity> getParts() {
         return parts;
     }

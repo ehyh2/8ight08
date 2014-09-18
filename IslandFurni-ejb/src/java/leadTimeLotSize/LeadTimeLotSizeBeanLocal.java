@@ -17,12 +17,12 @@ public interface LeadTimeLotSizeBeanLocal {
 
     public List<String> viewLeadTime();
     public List<String> viewLotSize();
-    public boolean addLeadTime(Long id, int leadTime);
-    public boolean editLeadTime(Long id, int leadTime);
-    public boolean deleteLeadTime(Long id);
-    //public List<String> viewLeadTime();
-    public boolean addLotSize(Long id, int lotSize);
-    public boolean editLotSize(Long id, int lotSize);
-    public boolean deleteLotSize(Long id);
-    //public List<String> viewLotSize();
+    public boolean addLeadTime(String id, String leadTime, String supplierId);
+    public boolean editLeadTime(String id, String leadTime, String supplierId);
+    public boolean deleteLeadTime(String id, String supplierId);
+    public List<String> viewLeadTimeSupplier(String supplierId);
+    public boolean addLotSize(String id, String lotSize, String supplierId);
+    public boolean editLotSize(String id, String lotSize, String supplierId);
+    public boolean deleteLotSize(String id, String supplierId);
+    public List<String> viewLotSizeSupplier(String supplierId);
 }
