@@ -64,7 +64,7 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
     }
     
     @Override
-    public boolean addItemToPurchaseOrder(Long purchaseID, Long partID) {
+    public boolean addItemToPurchaseOrder(Long purchaseID, Long partID, int quantity) {
         Query query1 = em.createQuery("SELECT p FROM PurchaseOrderEntity WHERE r.purchaseID =:first");
         query1.setParameter("first", purchaseID);
         List result1 = query1.getResultList();
@@ -84,6 +84,9 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
                 List allParts = p.getParts();
                 allParts.add(r);
                 p.setParts(allParts);
+                List allQuantity = p.getQuantity();
+                allQuantity.add(quantity);
+                p.setQuantity(allQuantity);
                 em.persist(p);
                 return true;
             }
@@ -98,6 +101,9 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
                 List allGoods = p.getFinishedGoods();
                 allGoods.add(f);
                 p.setParts(allGoods);
+                List allQuantity = p.getQuantity();
+                allQuantity.add(quantity);
+                p.setQuantity(allQuantity);
                 em.persist(p);
                 return true;
             }
@@ -112,6 +118,9 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
                 List allRetailPdts = p.getRetailProducts();
                 allRetailPdts.add(r);
                 p.setParts(allRetailPdts);
+                List allQuantity = p.getQuantity();
+                allQuantity.add(quantity);
+                p.setQuantity(allQuantity);
                 em.persist(p);
                 return true;
             } 
@@ -119,7 +128,7 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
     }
 
     @Override
-    public boolean delItemFromPurchaseOrder(Long purchaseID, Long partID) {
+    public boolean delItemFromPurchaseOrder(Long purchaseID, Long partID, int quantity) {
         Query query1 = em.createQuery("SELECT p FROM PurchaseOrderEntity WHERE p.purchaseID =:first");
         query1.setParameter("first", purchaseID);
         List result1 = query1.getResultList();
@@ -139,6 +148,9 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
                 List allParts = p.getParts();
                 allParts.remove(r);
                 p.setParts(allParts);
+                List allQuantity = p.getQuantity();
+                allQuantity.remove(quantity);
+                p.setQuantity(allQuantity);
                 em.persist(p);
                 return true;
             }
@@ -153,6 +165,9 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
                 List allGoods = p.getFinishedGoods();
                 allGoods.remove(f);
                 p.setParts(allGoods);
+                List allQuantity = p.getQuantity();
+                allQuantity.remove(quantity);
+                p.setQuantity(allQuantity);
                 em.persist(p);
                 return true;
             }
@@ -167,6 +182,9 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
                 List allRetailPdts = p.getRetailProducts();
                 allRetailPdts.remove(r);
                 p.setParts(allRetailPdts);
+                List allQuantity = p.getQuantity();
+                allQuantity.remove(quantity);
+                p.setQuantity(allQuantity);
                 em.persist(p);
                 return true;
             }
