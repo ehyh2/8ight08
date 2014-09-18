@@ -305,6 +305,8 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
         return al;
         
     }
+    
+    
     @Override
     public List<ArrayList> viewPurchaseOrderDetails(String purchaseID) {
         List<ArrayList> al = new ArrayList();
@@ -399,5 +401,18 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
         PurchaseOrderEntity p = (PurchaseOrderEntity)it1.next();
         p.setStatus("Completed");
         em.persist(p);
+    }
+
+    @Override
+    public boolean searchPurchaseOrderExist(Long purchaseID) {
+        boolean exist = false;
+        Query query1 = em.createQuery("SELECT p FROM PurchaseOrderEntity p WHERE p.purchaseID =:second");
+        query1.setParameter("second", purchaseID);
+        List results1 = query1.getResultList();
+        Iterator it1 = results1.iterator();
+        while(it1.hasNext()) {
+            exist = true;
+        }   
+        return exist;
     }
 }
