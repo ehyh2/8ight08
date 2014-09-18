@@ -45,11 +45,11 @@ public class BOMEntity implements Serializable {
         this.id = id;
     }
 
-    public List getQuantity() {
+    public List<Integer> getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(List quantity) {
+    public void setQuantity(List<Integer> quantity) {
         this.quantity = quantity;
     }
 
