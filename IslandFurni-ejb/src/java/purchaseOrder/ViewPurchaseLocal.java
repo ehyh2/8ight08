@@ -30,4 +30,6 @@ public interface ViewPurchaseLocal {
     public void setStatusReceived(Long purchaseID);
     public void setStatusInProgress(Long purchaseID);
     public void setStatusCompleted(Long purchaseID);
+
+    boolean searchPurchaseOrderExist(Long purchaseID);
 }

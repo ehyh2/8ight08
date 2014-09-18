@@ -6,10 +6,13 @@
 package manuFac;
 
 import entity.ManuFacEntity;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -43,4 +46,54 @@ public class ManuBean implements ManuBeanLocal {
             return false;
         }
     }
+
+    @Override
+    public List<ArrayList> viewListOfManu() {
+        List<ArrayList> al = new ArrayList();
+        Query query1 = em.createQuery("SELECT m FROM ManuFacEntity");
+        List results1 = query1.getResultList();
+        Iterator it1 = results1.iterator();
+        while(it1.hasNext()) {
+            ArrayList alc = new ArrayList();
+            ManuFacEntity m = (ManuFacEntity)it1.next();
+            Long id = m.getManuFacID();
+            alc.add(id);
+            al.add(alc);
+        }   
+        return al;
+    }
+
+    @Override
+    public void updateManuCountry(Long manuID, String country) {
+        ManuFacEntity manu = em.find(ManuFacEntity.class, manuID);
+        manu.setCountry(country);
+        em.persist(manu);
+    }
+
+    @Override
+    public boolean searchManuExist(Long manuID) {
+        boolean exist = false;
+        Query query1 = em.createQuery("SELECT m FROM ManuFacEntity WHERE m.manuFacID =:first");
+        query1.setParameter("first", manuID);
+        List results1 = query1.getResultList();
+        Iterator it1 = results1.iterator();
+        while(it1.hasNext()) {
+            exist = true;
+        }   
+        return exist;
+    }
+
+    @Override
+    public List<ArrayList> viewManuDetails(Long manuID) {
+        return null;
+    }
+
+    @Override
+    public void addProduct(Long manuID, Long productID) {
+    }
+
+    @Override
+    public void delProduct(Long manuID, Long productID) {
+    }
+    
 }

@@ -12,12 +12,15 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -28,29 +31,32 @@ public class SupplierEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long supplierID;
     private String contactNo;
     private String country;
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date contractEndDate;
     private String password;
     
-    
     @ManyToMany(mappedBy="suppliers")
-    private List<ManuFacEntity> manufacils = new ArrayList<ManuFacEntity>();
+    private List<ManuFacEntity> manufacils = new ArrayList<>();
     
     @ManyToMany
     @JoinTable(name="SupplierEntity_RawMaterialEntity")
-    private List<RawMaterialEntity> rawMats = new ArrayList<RawMaterialEntity>();
+    private List<RawMaterialEntity> rawMats = new ArrayList<>();
+    
+    @OneToMany(cascade={CascadeType.ALL}, mappedBy="supplier")
+    private List<PurchaseOrderEntity> purchaseOrders = new ArrayList<PurchaseOrderEntity>();
 
     public SupplierEntity() {
     }
 
-    public Date getContractEndDate() {
-        return contractEndDate;
+    public Long getSupplierID() {
+        return supplierID;
     }
 
-    public void setContractEndDate(Date contractEndDate) {
-        this.contractEndDate = contractEndDate;
+    public void setSupplierID(Long supplierID) {
+        this.supplierID = supplierID;
     }
 
     public String getContactNo() {
@@ -69,6 +75,22 @@ public class SupplierEntity implements Serializable {
         this.country = country;
     }
 
+    public Date getContractEndDate() {
+        return contractEndDate;
+    }
+
+    public void setContractEndDate(Date contractEndDate) {
+        this.contractEndDate = contractEndDate;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public List<ManuFacEntity> getManufacils() {
         return manufacils;
     }
@@ -85,19 +107,18 @@ public class SupplierEntity implements Serializable {
         this.rawMats = rawMats;
     }
 
-
-    public Long getId() {
-        return id;
+    public List<PurchaseOrderEntity> getPurchaseOrders() {
+        return purchaseOrders;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setPurchaseOrders(List<PurchaseOrderEntity> purchaseOrders) {
+        this.purchaseOrders = purchaseOrders;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (supplierID != null ? supplierID.hashCode() : 0);
         return hash;
     }
 
@@ -108,7 +129,7 @@ public class SupplierEntity implements Serializable {
             return false;
         }
         SupplierEntity other = (SupplierEntity) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.supplierID == null && other.supplierID != null) || (this.supplierID != null && !this.supplierID.equals(other.supplierID))) {
             return false;
         }
         return true;
@@ -116,7 +137,7 @@ public class SupplierEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.SupplierEntity[ id=" + id + " ]";
+        return "entity.SupplierEntity[ id=" + supplierID + " ]";
     }
     
 }
