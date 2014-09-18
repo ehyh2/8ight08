@@ -16,7 +16,17 @@ import javax.ejb.Local;
 public interface FinishedGoodsBeanLocal {
 
     public Long createDispatchRequest(Long sendFrom, Long sendTo);
-            
+
+    public boolean deleteDispatchRequest(Long dispatchId);
+
+    public boolean addItemToRequest(Long dispatchId, Long modelId, int qty);
+
+    public boolean delItemFromRequest(Long dispatchId, Long modelId, int qty);
+
+    public boolean editQtyInRequest(Long dispatchId, Long modelId, int qty);
+
+    public boolean submitDispatchRequest(Long dispatchId);
+
     public List<String> viewDispatchRequests();
 
     public boolean approveDispatch(Long dispatchId);

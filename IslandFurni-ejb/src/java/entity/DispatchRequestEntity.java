@@ -42,6 +42,9 @@ public class DispatchRequestEntity implements Serializable {
     
     @ManyToOne(cascade={CascadeType.ALL})
     private ManuFacEntity manuFac = new ManuFacEntity();
+    
+    @ManyToOne(cascade={CascadeType.ALL})
+    private StoreEntity store = new StoreEntity();
 
     public DispatchRequestEntity() {
     }
