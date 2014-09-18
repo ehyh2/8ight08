@@ -18,6 +18,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -31,16 +32,17 @@ public class SupplierEntity implements Serializable {
     private Long id;
     private String contactNo;
     private String country;
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date contractEndDate;
     private String password;
     
     
     @ManyToMany(mappedBy="suppliers")
-    private List<ManuFacEntity> manufacils = new ArrayList<ManuFacEntity>();
+    private List<ManuFacEntity> manufacils = new ArrayList<>();
     
     @ManyToMany
     @JoinTable(name="SupplierEntity_RawMaterialEntity")
-    private List<RawMaterialEntity> rawMats = new ArrayList<RawMaterialEntity>();
+    private List<RawMaterialEntity> rawMats = new ArrayList<>();
 
     public SupplierEntity() {
     }
