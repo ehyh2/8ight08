@@ -25,7 +25,7 @@ public class BomBean implements BomBeanLocal {
     private EntityManager em;
 
     //for global hq to create bom
-    //@Override
+    @Override
     public boolean createBOM(List<String> rm, List<String> qty) {
 
         List<RawMaterialEntity> rmlist = new ArrayList<RawMaterialEntity>();
@@ -70,7 +70,7 @@ public class BomBean implements BomBeanLocal {
     }
 
     //for global hq to delete bom
-    //@Override
+    @Override
     public boolean deleteBOM(String id) {
         Long longId = Long.parseLong(id);
         try {
@@ -96,7 +96,7 @@ public class BomBean implements BomBeanLocal {
     }
 
     //for global hq to edit bom
-    //@Override
+    @Override
     public boolean editBOM(String id, List<String> rm, List<String> qty) {
         Long longId = Long.parseLong(id);
         List<RawMaterialEntity> rmlist = new ArrayList<RawMaterialEntity>();
@@ -194,7 +194,7 @@ public class BomBean implements BomBeanLocal {
     }
     
     //for manu manager to view list of bom
-    //@Override
+    @Override
     public List<String> viewBOMList(){
         List<String> viewList = new ArrayList<String>();
         try {

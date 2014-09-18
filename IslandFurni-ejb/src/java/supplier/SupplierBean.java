@@ -15,6 +15,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -31,9 +32,8 @@ public class SupplierBean implements SupplierBeanLocal {
         Iterator it1 = rawMats.iterator();
         SupplierEntity supplier = new SupplierEntity();
         supplier.setCountry(country);
-
+        supplier.setContractEndDate(contractEndDate);
         while(it1.hasNext()) {
-            ArrayList alc = new ArrayList();
             Long rawMatID = (Long)it1.next();
             RawMaterialEntity rawMat = em.find(RawMaterialEntity.class, rawMatID);
             raw.add(rawMat);
@@ -59,12 +59,42 @@ public class SupplierBean implements SupplierBeanLocal {
 
     @Override
     public List<ArrayList> viewListofSupplier() {
-        return null;
+        List<ArrayList> al = new ArrayList();
+        Query query1 = em.createQuery("SELECT s FROM SupplierEntity");
+        List results1 = query1.getResultList();
+        Iterator it1 = results1.iterator();
+        while(it1.hasNext()) {
+            ArrayList alc = new ArrayList();
+            SupplierEntity s = (SupplierEntity)it1.next();
+            Long id = s.getId();
+            alc.add(id);
+            al.add(alc);
+        }   
+        return al;
     }
 
     @Override
     public List<ArrayList> viewSupplierDetails(Long supplierID) {
-        return null;
+        SupplierEntity supplier = em.find(SupplierEntity.class, supplierID);
+        List<ArrayList> al = new ArrayList();
+        ArrayList alc = new ArrayList();
+        String country = supplier.getCountry();
+        String contact = supplier.getContactNo();
+        Date contractEndDate = supplier.getContractEndDate();
+        alc.add(supplierID);
+        alc.add(country);
+        alc.add(contact);
+        alc.add(contractEndDate);
+        al.add(alc);
+        List<RawMaterialEntity> rawMats= supplier.getRawMats();
+        Iterator it1 = rawMats.iterator();
+        while(it1.hasNext()) {
+            ArrayList al1 = new ArrayList();
+            RawMaterialEntity rm = (RawMaterialEntity)it1.next();
+            rm.getId();
+           //haven finish 
+        }
+        return al;
     }
 
     @Override
