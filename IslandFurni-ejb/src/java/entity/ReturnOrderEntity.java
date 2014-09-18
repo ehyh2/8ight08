@@ -20,7 +20,7 @@ import javax.persistence.ManyToOne;
 
 /**
  *
- * @author Charmaine
+ * @author Charmaine 
  */
 @Entity
 public class ReturnOrderEntity implements Serializable {
