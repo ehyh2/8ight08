@@ -27,7 +27,7 @@ public class SupplierBean implements SupplierBeanLocal {
     @PersistenceContext
     private EntityManager em;
 
-    public boolean addSupplier(String country, List<ArrayList> rawMats, Date contractEndDate) {//query raw material entities and save into list
+    public boolean addSupplier(String country, List rawMats, Date contractEndDate) {//query raw material entities and save into list
         List<RawMaterialEntity>  raw = new ArrayList<RawMaterialEntity>();
         Iterator it1 = rawMats.iterator();
         SupplierEntity supplier = new SupplierEntity();
@@ -39,16 +39,12 @@ public class SupplierBean implements SupplierBeanLocal {
             raw.add(rawMat);
         }   
         supplier.setRawMats(raw);    
-        //manuFacil.setCountry(country);
         em.persist(supplier);
         return true;
     }
     
     public boolean delSupplier(Long ssID) {
         SupplierEntity supplier = em.find(SupplierEntity.class, ssID);
-        //if (manuFacil.getFinishedGoods() == null)
-        //if (manuFacil.getRawMats() == null)
-        //if (manuFacil.getSuppliers() == null)
         if (supplier != null) {
             em.remove(supplier);
             return true;
@@ -97,17 +93,24 @@ public class SupplierBean implements SupplierBeanLocal {
         return al;
     }
 
-    public void updateSupplierDetails(String supplierID, String contactNo, String country) {
-        Long l = Long.parseLong(supplierID);
-        SupplierEntity supplier = em.find(SupplierEntity.class, l);
+    public void updateSupplierDetails(Long supplierID, String contactNo, String country) {
+        SupplierEntity supplier = em.find(SupplierEntity.class, supplierID);
         supplier.setContactNo(contactNo);
         supplier.setCountry(country);
         
     }
 
     @Override
-    public boolean searchSupplierExist(String supplierID) {
-        return false;
+    public boolean searchSupplierExist(Long supplierID) {
+        boolean exist = false;
+        Query query1 = em.createQuery("SELECT s FROM SupplierEntity WHERE s.id =:first");
+        query1.setParameter("first", supplierID);
+        List results1 = query1.getResultList();
+        Iterator it1 = results1.iterator();
+        while(it1.hasNext()) {
+            exist = true;
+        }   
+        return exist;
     }
 
     @Override
@@ -116,13 +119,15 @@ public class SupplierBean implements SupplierBeanLocal {
     }
 
     @Override
-    public boolean updateSupplierContractEndDate(Date contractEndDate) {
-        return false;
+    public void updateSupplierContractEndDate(Long supplierID, Date contractEndDate) {
+        SupplierEntity supplier = em.find(SupplierEntity.class, supplierID);
+        supplier.setContractEndDate(contractEndDate);
     }
 
     @Override
-    public boolean setSupplierPassword(String supplierID) {
-        return false;
+    public void setSupplierPassword(Long supplierID, String password) {
+        SupplierEntity supplier = em.find(SupplierEntity.class, supplierID);
+        supplier.setPassword(password);
     }
     
     

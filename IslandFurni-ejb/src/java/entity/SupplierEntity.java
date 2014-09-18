@@ -61,6 +61,14 @@ public class SupplierEntity implements Serializable {
         this.contactNo = contactNo;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getCountry() {
         return country;
     }
