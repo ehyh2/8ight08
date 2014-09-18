@@ -43,8 +43,8 @@ public class SupplierBean implements SupplierBeanLocal {
         return true;
     }
     
-    public boolean delSupplier(Long ssID) {
-        SupplierEntity supplier = em.find(SupplierEntity.class, ssID);
+    public boolean delSupplier(Long supplierID) {
+        SupplierEntity supplier = em.find(SupplierEntity.class, supplierID);
         if (supplier != null) {
             em.remove(supplier);
             return true;
@@ -62,7 +62,7 @@ public class SupplierBean implements SupplierBeanLocal {
         while(it1.hasNext()) {
             ArrayList alc = new ArrayList();
             SupplierEntity s = (SupplierEntity)it1.next();
-            Long id = s.getId();
+            Long id = s.getSupplierID();
             alc.add(id);
             al.add(alc);
         }   
@@ -104,7 +104,7 @@ public class SupplierBean implements SupplierBeanLocal {
     @Override
     public boolean searchSupplierExist(Long supplierID) {
         boolean exist = false;
-        Query query1 = em.createQuery("SELECT s FROM SupplierEntity WHERE s.id =:first");
+        Query query1 = em.createQuery("SELECT s FROM SupplierEntity s WHERE s.supplierID =:first");
         query1.setParameter("first", supplierID);
         List results1 = query1.getResultList();
         Iterator it1 = results1.iterator();

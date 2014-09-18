@@ -32,7 +32,7 @@ public class BOMManagerBean implements Serializable {
     private String qty;
     private List<String> rmList;
     private List<String> qtyList;
-    private Long id;
+    private String id;
     private String message = null;
     private List<String> bomList;
     private List<String> filteredBomList;
@@ -105,11 +105,11 @@ public class BOMManagerBean implements Serializable {
     }
 
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
