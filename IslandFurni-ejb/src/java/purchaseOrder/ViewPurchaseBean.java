@@ -58,7 +58,7 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
     
     @Override
     public void deletePurchaseOrder(Long purchaseID) {
-        Query query = em.createQuery("SELECT po FROM PurchaseOrderEntity WHERE po.purchaseID =:first");
+        Query query = em.createQuery("SELECT p FROM PurchaseOrderEntity p WHERE p.purchaseID =:first");
         query.setParameter("first", purchaseID);
         PurchaseOrderEntity purchaseOrder = (PurchaseOrderEntity) query.getSingleResult();
         em.remove(purchaseOrder);
@@ -66,7 +66,7 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
     
     @Override
     public boolean addItemToPurchaseOrder(Long purchaseID, Long partID, int quantity) {
-        Query query1 = em.createQuery("SELECT p FROM PurchaseOrderEntity WHERE r.purchaseID =:first");
+        Query query1 = em.createQuery("SELECT p FROM PurchaseOrderEntity p WHERE r.purchaseID =:first");
         query1.setParameter("first", purchaseID);
         List result1 = query1.getResultList();
         Iterator it2 = result1.iterator(); 
@@ -75,7 +75,7 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
         String type = p.getType();
         
         if (type.equals("Raw Material")) {
-            Query query2 = em.createQuery("SELECT r FROM RawMaterialEntity WHERE r.partID =:first");
+            Query query2 = em.createQuery("SELECT r FROM RawMaterialEntity r WHERE r.partID =:first");
             query2.setParameter("first", partID);
             List result2 = query2.getResultList();
             Iterator it = result2.iterator(); 
@@ -92,7 +92,7 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
                 return true;
             }
         } else if (type.equals("Finished Good")) {
-            Query query2 = em.createQuery("SELECT f FROM FinishedGoodEntity WHERE f.modelID =:first");
+            Query query2 = em.createQuery("SELECT f FROM FinishedGoodEntity f WHERE f.modelID =:first");
             query2.setParameter("first", partID);
             List result2 = query2.getResultList();
             Iterator it = result2.iterator(); 
@@ -109,7 +109,7 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
                 return true;
             }
         } else if (type.equals("Retail Product")) {
-            Query query2 = em.createQuery("SELECT r FROM RetailProductEntity WHERE r.modelID =:first");
+            Query query2 = em.createQuery("SELECT r FROM RetailProductEntity r WHERE r.modelID =:first");
             query2.setParameter("first", partID);
             List result2 = query2.getResultList();
             Iterator it = result2.iterator(); 
@@ -130,7 +130,7 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
 
     @Override
     public boolean delItemFromPurchaseOrder(Long purchaseID, Long partID, int quantity) {
-        Query query1 = em.createQuery("SELECT p FROM PurchaseOrderEntity WHERE p.purchaseID =:first");
+        Query query1 = em.createQuery("SELECT p FROM PurchaseOrderEntity p WHERE p.purchaseID =:first");
         query1.setParameter("first", purchaseID);
         List result1 = query1.getResultList();
         Iterator it = result1.iterator(); 
@@ -139,7 +139,7 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
         String type = p.getType();
         
         if (type.equals("Raw Material")) {
-            Query query2 = em.createQuery("SELECT r FROM RawMaterialEntity WHERE r.partID =:first");
+            Query query2 = em.createQuery("SELECT r FROM RawMaterialEntity r WHERE r.partID =:first");
             query2.setParameter("first", partID);
             List result2 = query2.getResultList();
             Iterator it2 = result2.iterator();
@@ -156,7 +156,7 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
                 return true;
             }
         } else if (type.equals("Finished Good")) {
-            Query query2 = em.createQuery("SELECT r FROM FinishedGoodEntity WHERE r.modelID =:first");
+            Query query2 = em.createQuery("SELECT f FROM FinishedGoodEntity f WHERE f.modelID =:first");
             query2.setParameter("first", partID);
             List result2 = query2.getResultList();
             Iterator it2 = result2.iterator();
@@ -173,7 +173,7 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
                 return true;
             }
         } else if (type.equals("Retail Product")) {
-            Query query2 = em.createQuery("SELECT r FROM RetailProductEntity WHERE r.modelID =:first");
+            Query query2 = em.createQuery("SELECT r FROM RetailProductEntity r WHERE r.modelID =:first");
             query2.setParameter("first", partID);
             List result2 = query2.getResultList();
             Iterator it2 = result2.iterator();
@@ -252,7 +252,7 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
     public List<ArrayList> viewUncompletedPurchaseOrderList(Long userID) {
     //displays all the purchase orders of the userID that are not completed
         List<ArrayList> al = new ArrayList();
-        Query query1 = em.createQuery("SELECT p FROM PurchaseOrderEntity WHERE p.sendFrom =:second");
+        Query query1 = em.createQuery("SELECT p FROM PurchaseOrderEntity p WHERE p.sendFrom =:second");
         query1.setParameter("second", userID);
         List results1 = query1.getResultList();
         Iterator it1 = results1.iterator();
@@ -261,7 +261,7 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
             PurchaseOrderEntity p = (PurchaseOrderEntity)it1.next();
             String pStatus = p.getStatus();
             Long purchaseID = p.getPurchaseID();
-            if (!pStatus.equals("completed")){
+            if (!pStatus.equals("Completed")){
                 System.out.println("print modelid in getpurchaseid" + purchaseID);
                 alc.add(purchaseID);
                 String type = p.getType();
@@ -280,7 +280,7 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
     public List<ArrayList> viewCompletedPurchaseOrderList(Long userID) {
       //displays all the purchase orders of the userID that are completed
         List<ArrayList> al = new ArrayList();
-     /*   Query query1 = em.createQuery("SELECT p FROM PurchaseEntity WHERE p.sendFrom =:second");
+     /*   Query query1 = em.createQuery("SELECT p FROM PurchaseEntity p WHERE p.sendFrom =:second");
         query1.setParameter("second", userID);
         List results1 = query1.getResultList();
         Iterator it1 = results1.iterator();
@@ -308,7 +308,7 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
     @Override
     public List<ArrayList> viewPurchaseOrderDetails(String purchaseID) {
         List<ArrayList> al = new ArrayList();
-        Query query1 = em.createQuery("SELECT p FROM PurchaseOrderEntity WHERE p.id =:second");
+        Query query1 = em.createQuery("SELECT p FROM PurchaseOrderEntity p WHERE p.purchaseID =:second");
         query1.setParameter("second", purchaseID);
         List results1 = query1.getResultList();
         Iterator it1 = results1.iterator();
@@ -348,7 +348,7 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
     
     @Override
     public void setStatusPending(Long purchaseID) {
-        Query query1 = em.createQuery("SELECT p FROM PurchaseOrderEntity WHERE p.id =:second");
+        Query query1 = em.createQuery("SELECT p FROM PurchaseOrderEntity p WHERE p.purchaseID =:second");
         query1.setParameter("second", purchaseID);
         List results1 = query1.getResultList();
         Iterator it1 = results1.iterator();
@@ -359,7 +359,7 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
     
     @Override
     public void setStatusSent(Long purchaseID) {
-        Query query1 = em.createQuery("SELECT p FROM PurchaseOrderEntity WHERE p.id =:second");
+        Query query1 = em.createQuery("SELECT p FROM PurchaseOrderEntity p WHERE p.purchaseID =:second");
         query1.setParameter("second", purchaseID);
         List results1 = query1.getResultList();
         Iterator it1 = results1.iterator();
@@ -370,7 +370,7 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
     
     @Override
     public void setStatusReceived(Long purchaseID) {
-        Query query1 = em.createQuery("SELECT p FROM PurchaseOrderEntity WHERE p.id =:second");
+        Query query1 = em.createQuery("SELECT p FROM PurchaseOrderEntity p WHERE p.purchaseID =:second");
         query1.setParameter("second", purchaseID);
         List results1 = query1.getResultList();
         Iterator it1 = results1.iterator();
@@ -381,7 +381,7 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
     
     @Override
     public void setStatusInProgress(Long purchaseID) {
-        Query query1 = em.createQuery("SELECT p FROM PurchaseOrderEntity WHERE p.id =:second");
+        Query query1 = em.createQuery("SELECT p FROM PurchaseOrderEntity p WHERE p.purchaseID =:second");
         query1.setParameter("second", purchaseID);
         List results1 = query1.getResultList();
         Iterator it1 = results1.iterator();
@@ -392,7 +392,7 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
     
     @Override
     public void setStatusCompleted(Long purchaseID) {
-        Query query1 = em.createQuery("SELECT p FROM PurchaseOrderEntity WHERE p.id =:second");
+        Query query1 = em.createQuery("SELECT p FROM PurchaseOrderEntity p WHERE p.purchaseID =:second");
         query1.setParameter("second", purchaseID);
         List results1 = query1.getResultList();
         Iterator it1 = results1.iterator();
