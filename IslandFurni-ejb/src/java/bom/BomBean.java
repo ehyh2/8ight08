@@ -178,7 +178,7 @@ public class BomBean implements BomBeanLocal {
                             bom.setRawMats(rmList);
                             List<Integer> qtyList = new ArrayList<Integer>();
                             qtyList = bom.getQuantity();
-                            qtyList.remove(quantity);
+                            qtyList.add(quantity);
                             bom.setQuantity(qtyList);
                             em.persist(bom);
                             return true;
@@ -278,7 +278,7 @@ public class BomBean implements BomBeanLocal {
             System.out.println("bom does not exist");
             return false;
         } catch (Exception e) {
-            System.out.println("exception in delete item from bom method");
+            System.out.println("exception in edit qty of item in bom method");
             System.out.println(e.getMessage());
         }
         return false;
