@@ -6,6 +6,7 @@
 
 package manuFac;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -18,4 +19,12 @@ public interface ManuBeanLocal {
     
     public boolean addMF(String country, List goodsQty, List partsQty);
     public boolean delMF(Long mfID);
+
+    List<ArrayList> viewListOfManu();
+
+    void updateManuCountry(Long manuID, String country);
+
+    boolean searchManuExist(Long manuID);
+
+    List<ArrayList> viewManuDetails(Long manuID);
 }

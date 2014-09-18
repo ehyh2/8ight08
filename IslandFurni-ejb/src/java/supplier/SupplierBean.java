@@ -97,6 +97,7 @@ public class SupplierBean implements SupplierBeanLocal {
         SupplierEntity supplier = em.find(SupplierEntity.class, supplierID);
         supplier.setContactNo(contactNo);
         supplier.setCountry(country);
+        em.persist(supplier);
         
     }
 
@@ -122,12 +123,14 @@ public class SupplierBean implements SupplierBeanLocal {
     public void updateSupplierContractEndDate(Long supplierID, Date contractEndDate) {
         SupplierEntity supplier = em.find(SupplierEntity.class, supplierID);
         supplier.setContractEndDate(contractEndDate);
+        em.persist(supplier);
     }
 
     @Override
     public void setSupplierPassword(Long supplierID, String password) {
         SupplierEntity supplier = em.find(SupplierEntity.class, supplierID);
         supplier.setPassword(password);
+        em.persist(supplier);
     }
     
     
