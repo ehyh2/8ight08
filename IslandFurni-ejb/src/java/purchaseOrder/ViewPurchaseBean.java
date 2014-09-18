@@ -46,6 +46,7 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
             String date = splited[0];
             String time = splited[1];
             
+            purchaseOrderEntity.setStatus("Pending");
             String status = purchaseOrderEntity.getStatus();
             purchaseOrderEntity.create(type, date, time, sendFrom, sendTo, status);
             em.persist(purchaseOrderEntity);
@@ -352,7 +353,7 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
         List results1 = query1.getResultList();
         Iterator it1 = results1.iterator();
         PurchaseOrderEntity p = (PurchaseOrderEntity)it1.next();
-        p.setStatus("pending");
+        p.setStatus("Pending");
         em.persist(p);
     }
     
@@ -363,7 +364,7 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
         List results1 = query1.getResultList();
         Iterator it1 = results1.iterator();
         PurchaseOrderEntity p = (PurchaseOrderEntity)it1.next();
-        p.setStatus("sent");
+        p.setStatus("Sent");
         em.persist(p);
     }
     
@@ -374,7 +375,7 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
         List results1 = query1.getResultList();
         Iterator it1 = results1.iterator();
         PurchaseOrderEntity p = (PurchaseOrderEntity)it1.next();
-        p.setStatus("received");
+        p.setStatus("Received");
         em.persist(p);
     }
     
@@ -385,7 +386,7 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
         List results1 = query1.getResultList();
         Iterator it1 = results1.iterator();
         PurchaseOrderEntity p = (PurchaseOrderEntity)it1.next();
-        p.setStatus("in progress");
+        p.setStatus("In Progress");
         em.persist(p);
     }
     
@@ -396,7 +397,7 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
         List results1 = query1.getResultList();
         Iterator it1 = results1.iterator();
         PurchaseOrderEntity p = (PurchaseOrderEntity)it1.next();
-        p.setStatus("completed");
+        p.setStatus("Completed");
         em.persist(p);
     }
 }
