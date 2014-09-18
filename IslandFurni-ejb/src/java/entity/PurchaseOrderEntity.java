@@ -135,7 +135,7 @@ public class PurchaseOrderEntity implements Serializable {
     public void setStatus(String status) {
         this.status = status;
     }
-    
+     
     public List<RawMaterialEntity> getParts() {
         return parts;
     }
