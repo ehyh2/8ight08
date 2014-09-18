@@ -97,13 +97,16 @@ public class SupplierBean implements SupplierBeanLocal {
         return al;
     }
 
-    @Override
-    public boolean updateSupplierDetails(Long supplierID, String contactNo, String country) {
-        return false;
+    public void updateSupplierDetails(String supplierID, String contactNo, String country) {
+        Long l = Long.parseLong(supplierID);
+        SupplierEntity supplier = em.find(SupplierEntity.class, l);
+        supplier.setContactNo(contactNo);
+        supplier.setCountry(country);
+        
     }
 
     @Override
-    public boolean searchSupplierExist(Long supplierID) {
+    public boolean searchSupplierExist(String supplierID) {
         return false;
     }
 
@@ -118,7 +121,7 @@ public class SupplierBean implements SupplierBeanLocal {
     }
 
     @Override
-    public boolean setSupplierPassword(Long supplierID) {
+    public boolean setSupplierPassword(String supplierID) {
         return false;
     }
     

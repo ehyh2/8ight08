@@ -35,21 +35,21 @@ public interface SupplierBeanLocal {
     //first line on the List contains arraylist of country etc.
     //the rest of the lines onwards contains details of the raw materials that the supplier is supplying
 
-    boolean updateSupplierDetails(Long supplierID, String contactNo, String country);
+    void updateSupplierDetails(String supplierID, String contactNo, String country);
     // This function is for suppliers themselves to update their contact number and country
-    //returns 1 if sucessfully updated
+
     
     boolean updateSupplierContractEndDate(Date contractEndDate);
     //This function is for manufacturingM to update the contractEndDate of supplliers;
     // returns 1 if successfully updated
 
-    boolean searchSupplierExist(Long supplierID);
+    boolean searchSupplierExist(String supplierID);
     //returns 1 if supplier exist
 
     boolean sendSupplierListToGlobal();
     // 
 
-    boolean setSupplierPassword(Long supplierID);
+    boolean setSupplierPassword(String supplierID);
     // for global to set the supplier password when they click on the supplier in the list of
     //supplierID
     
