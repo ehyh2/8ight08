@@ -165,7 +165,7 @@ public class BomBean implements BomBeanLocal {
             if (!results.isEmpty()) {
                 for (Object o : results) {
                     BOMEntity bom = (BOMEntity) o;
-                    Query query1 = em.createQuery("SELECT rm FROM RawMaterialEntity WHERE rm.id =:second");
+                    Query query1 = em.createQuery("SELECT rm FROM RawMaterialEntity rm WHERE rm.id =:second");
                     query1.setParameter("second", rawId);
                     List results1 = query1.getResultList();
                     if (results1.size() != 0) {
@@ -213,7 +213,7 @@ public class BomBean implements BomBeanLocal {
             if (!results.isEmpty()) {
                 for (Object o : results) {
                     BOMEntity bom = (BOMEntity) o;
-                    Query query1 = em.createQuery("SELECT rm FROM RawMaterialEntity WHERE rm.id =:second");
+                    Query query1 = em.createQuery("SELECT rm FROM RawMaterialEntity rm WHERE rm.id =:second");
                     query1.setParameter("second", rawId);
                     List results1 = query1.getResultList();
                     if (results1.size() != 0) {
