@@ -48,6 +48,9 @@ public class ManuFacEntity implements Serializable {
     private List<PurchaseOrderEntity> purchaseOrders = new ArrayList<PurchaseOrderEntity>();
     
     @OneToMany(cascade={CascadeType.ALL}, mappedBy="manuFac")
+    private List<ReturnOrderEntity> returnOrders = new ArrayList<ReturnOrderEntity>();
+    
+    @OneToMany(cascade={CascadeType.ALL}, mappedBy="manuFac")
     private List<DispatchRequestEntity> dispatchRequests = new ArrayList<DispatchRequestEntity>();
     
     public ManuFacEntity() {
@@ -123,6 +126,14 @@ public class ManuFacEntity implements Serializable {
         this.purchaseOrders = purchaseOrders;
     }
 
+    public List<ReturnOrderEntity> getReturnOrders() {
+        return returnOrders;
+    }
+
+    public void setReturnOrders(List<ReturnOrderEntity> returnOrders) {
+        this.returnOrders = returnOrders;
+    }
+    
     public List<DispatchRequestEntity> getDispatchRequests() {
         return dispatchRequests;
     }
