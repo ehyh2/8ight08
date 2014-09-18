@@ -129,7 +129,6 @@ public class PurchaseOrderEntity implements Serializable {
     }
 
     public String getStatus() {
-        status = "Pending";
         return status;
     }
 
