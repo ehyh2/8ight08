@@ -5,6 +5,7 @@
  */
 package manuFac;
 
+import entity.FinishedGoodEntity;
 import entity.ManuFacEntity;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -90,10 +91,27 @@ public class ManuBean implements ManuBeanLocal {
 
     @Override
     public void addProduct(Long manuID, Long productID) {
+        ManuFacEntity manu = em.find(ManuFacEntity.class, manuID);
+        List<FinishedGoodEntity> fglist = manu.getFinishedGoods();
+        FinishedGoodEntity fg = em.find(FinishedGoodEntity.class, productID);
+        fglist.add(fg);
+        manu.setFinishedGoods(fglist);
+        em.persist(manu);
     }
 
     @Override
     public void delProduct(Long manuID, Long productID) {
+        ManuFacEntity manu = em.find(ManuFacEntity.class, manuID);
+        List<FinishedGoodEntity> fglist = manu.getFinishedGoods();
+        FinishedGoodEntity fg = em.find(FinishedGoodEntity.class, productID);
+        Iterator it1 = fglist.iterator();
+        while(it1.hasNext()) {
+            FinishedGoodEntity g = (FinishedGoodEntity)it1.next();
+            if (fg.equals(g))
+                fglist.remove(g);
+        }
+        manu.setFinishedGoods(fglist);
+        em.persist(manu);
     }
     
 }
