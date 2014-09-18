@@ -45,6 +45,10 @@ public class PurchaseOrderEntity implements Serializable {
     @JoinTable(name="PurchaseOrderEntity_FinishedGoodEntity")
     private List<FinishedGoodEntity> finishedGoods = new ArrayList<>();
 
+    @ManyToMany(cascade={CascadeType.ALL})
+    @JoinTable(name="PurchaseOrderEntity_RetailProductEntity")
+    private List<RetailProductEntity> retailProducts = new ArrayList<>();
+    
     @ManyToOne(cascade={CascadeType.ALL})
     private ManuFacEntity manuFac = new ManuFacEntity();
 
@@ -125,14 +129,13 @@ public class PurchaseOrderEntity implements Serializable {
     }
 
     public String getStatus() {
-        status = "Pending";
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
     }
-    
+     
     public List<RawMaterialEntity> getParts() {
         return parts;
     }
@@ -147,6 +150,14 @@ public class PurchaseOrderEntity implements Serializable {
 
     public void setFinishedGoods(List<FinishedGoodEntity> finishedGoods) {
         this.finishedGoods = finishedGoods;
+    }
+
+    public List<RetailProductEntity> getRetailProducts() {
+        return retailProducts;
+    }
+
+    public void setRetailProducts(List<RetailProductEntity> retailProducts) {
+        this.retailProducts = retailProducts;
     }
 
     public ManuFacEntity getManuFac() {

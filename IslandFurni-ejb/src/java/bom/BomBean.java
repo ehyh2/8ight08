@@ -36,7 +36,7 @@ public class BomBean implements BomBeanLocal {
             //to get the list of raw materials
             for (String id : rm) {
                 Long longId = Long.parseLong(id);
-                Query query = em.createQuery("SELECT rm FROM RawMaterialEntity WHERE rm.id =:first");
+                Query query = em.createQuery("SELECT rm FROM RawMaterialEntity rm WHERE rm.id =:first");
                 query.setParameter("first", longId);
                 List results = query.getResultList();
                 if (!results.isEmpty()) {
@@ -71,10 +71,11 @@ public class BomBean implements BomBeanLocal {
 
     //for global hq to delete bom
     @Override
-    public boolean deleteBOM(Long id) {
+    public boolean deleteBOM(String id) {
+        Long longId = Long.parseLong(id);
         try {
-            Query query = em.createQuery("SELECT bom FROM BOMEntity WHERE bom.id =:first");
-            query.setParameter("first", id);
+            Query query = em.createQuery("SELECT bom FROM BOMEntity bom WHERE bom.id =:first");
+            query.setParameter("first", longId);
             List results = query.getResultList();
             if (!results.isEmpty()) {
                 for (Object o : results) {
@@ -96,21 +97,24 @@ public class BomBean implements BomBeanLocal {
 
     //for global hq to edit bom
     @Override
-    public boolean editBOM(Long id, List<Long> rm, List<Integer> qty) {
+    public boolean editBOM(String id, List<String> rm, List<String> qty) {
+        Long longId = Long.parseLong(id);
+        List<RawMaterialEntity> rmlist = new ArrayList<RawMaterialEntity>();
+        List<Integer> qtylist = new ArrayList<Integer>();
         //find the bom
         try {
-            Query query = em.createQuery("SELECT bom FROM BOMEntity WHERE bom.id =:first");
-            query.setParameter("first", id);
+            Query query = em.createQuery("SELECT bom FROM BOMEntity bom WHERE bom.id =:first");
+            query.setParameter("first", longId);
             List results = query.getResultList();
             if (!results.isEmpty()) {
                 for (Object o : results) {
                     BOMEntity bom = (BOMEntity) o;
 
-                    List<RawMaterialEntity> rmlist = new ArrayList<RawMaterialEntity>();
                     //to get the new list of raw materials
-                    for (Long i : rm) {
-                        Query query1 = em.createQuery("SELECT rm FROM RawMaterialEntity WHERE rm.id =:first");
-                        query1.setParameter("first", i);
+                    for (String s : rm) {
+                        Long longRawId = Long.parseLong(s);
+                        Query query1 = em.createQuery("SELECT rm FROM RawMaterialEntity WHERE rm.id =:second");
+                        query1.setParameter("second", longRawId);
                         List results1 = query1.getResultList();
                         if (results1.size() != 0) {
                             for (Object o1 : results1) {
@@ -123,9 +127,15 @@ public class BomBean implements BomBeanLocal {
                         }
                     }
                     
+                    //to get the list of quantity
+                     for (String q : qty){
+                        Integer quantity = Integer.parseInt(q);
+                        qtylist.add(quantity);
+                    }
+                    
                     //edit the bom
                     bom.setRawMats(rmlist);
-                    bom.setQuantity(qty);
+                    bom.setQuantity(qtylist);
                     em.persist(bom);
                     return true;
                 }
@@ -143,14 +153,15 @@ public class BomBean implements BomBeanLocal {
     
     //for global hq to search for bom
     @Override
-    public List<String> searchBOM(Long id) {
+    public List<String> searchBOM(String id) {
 
         List<String> searchList = new ArrayList<String>();
+        Long longId = Long.parseLong(id);
 
         try {
             //to find the bom
-            Query query = em.createQuery("SELECT bom FROM BOMEntity WHERE bom.id =:first");
-            query.setParameter("first", id);
+            Query query = em.createQuery("SELECT bom FROM BOMEntity bom WHERE bom.id =:first");
+            query.setParameter("first", longId);
             List results = query.getResultList();
             if (!results.isEmpty()) {
                 for (Object o : results) {
@@ -187,7 +198,7 @@ public class BomBean implements BomBeanLocal {
     public List<String> viewBOMList(){
         List<String> viewList = new ArrayList<String>();
         try {
-            Query query = em.createQuery("SELECT bom FROM BOMEntity");
+            Query query = em.createQuery("SELECT bom FROM BOMEntity bom");
             List results = query.getResultList();
             if (!results.isEmpty()) {
                 for (Object o : results) {

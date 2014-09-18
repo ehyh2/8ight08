@@ -16,6 +16,12 @@ import javax.ejb.Local;
  */
 @Local
 public interface ViewPurchaseLocal {
+    public Long createPurchaseOrder(String type, Long sendFrom, Long sendTo);
+    public void deletePurchaseOrder(Long purchaseID);
+    public boolean addItemToPurchaseOrder(Long purchaseID, Long partID, int quantity); 
+    public boolean delItemFromPurchaseOrder(Long purchaseID, Long partID, int quantity);
+    public boolean editQtyOfPurchaseOrder(Long purchaseID, Long partID, int quantity);
+    //public void sendRawMaterialPurchaseOrder(Long purchaseID, Long sendTo);
     public List<ArrayList> viewUncompletedPurchaseOrderList(Long userID);
     public List<ArrayList> viewCompletedPurchaseOrderList(Long userID);
     public List<ArrayList> viewPurchaseOrderDetails(String purchaseID);
@@ -24,6 +30,4 @@ public interface ViewPurchaseLocal {
     public void setStatusReceived(Long purchaseID);
     public void setStatusInProgress(Long purchaseID);
     public void setStatusCompleted(Long purchaseID);
-    public void createRawMaterialPurchaseOrder(String type, Long sendFrom, Long sendTo);
-    
 }
