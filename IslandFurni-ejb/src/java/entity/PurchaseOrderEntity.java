@@ -51,6 +51,9 @@ public class PurchaseOrderEntity implements Serializable {
     
     @ManyToOne(cascade={CascadeType.ALL})
     private ManuFacEntity manuFac = new ManuFacEntity();
+    
+    @ManyToOne(cascade={CascadeType.ALL})
+    private SupplierEntity supplier = new SupplierEntity();
 
     public PurchaseOrderEntity() {
     }
@@ -167,6 +170,14 @@ public class PurchaseOrderEntity implements Serializable {
     public void setManuFac(ManuFacEntity manuFac) {
         this.manuFac = manuFac;
     } 
+
+    public SupplierEntity getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(SupplierEntity supplier) {
+        this.supplier = supplier;
+    }
 
     @Override
     public int hashCode() {
