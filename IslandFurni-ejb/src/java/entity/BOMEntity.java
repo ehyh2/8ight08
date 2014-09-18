@@ -34,6 +34,9 @@ public class BOMEntity implements Serializable {
     @JoinTable(name="BOMEntity_RawMaterialEntity")
     private List<RawMaterialEntity> rawMats = new ArrayList<RawMaterialEntity>();
     
+    public BOMEntity() {
+    }
+    
     public Long getId() {
         return id;
     }
