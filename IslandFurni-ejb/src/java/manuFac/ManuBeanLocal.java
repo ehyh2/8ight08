@@ -27,4 +27,8 @@ public interface ManuBeanLocal {
     boolean searchManuExist(Long manuID);
 
     List<ArrayList> viewManuDetails(Long manuID);
+
+    void addProduct(Long manuID, Long productID);
+
+    void delProduct(Long manuID, Long productID);
 }

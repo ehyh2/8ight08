@@ -87,5 +87,13 @@ public class ManuBean implements ManuBeanLocal {
     public List<ArrayList> viewManuDetails(Long manuID) {
         return null;
     }
+
+    @Override
+    public void addProduct(Long manuID, Long productID) {
+    }
+
+    @Override
+    public void delProduct(Long manuID, Long productID) {
+    }
     
 }
