@@ -38,6 +38,9 @@ public class StoreEntity implements Serializable {
     @JoinTable(name="StoreEntity_FinishedGoodEntity")
     private List<FinishedGoodEntity> finishedGoods = new ArrayList<>();
     
+    @OneToMany(cascade={CascadeType.ALL}, mappedBy="store")
+    private List<ReturnOrderEntity> returnOrders = new ArrayList<ReturnOrderEntity>();
+    
     public StoreEntity(){
         
     }
@@ -80,6 +83,14 @@ public class StoreEntity implements Serializable {
 
     public void setFinishedGoods(List<FinishedGoodEntity> finishedGoods) {
         this.finishedGoods = finishedGoods;
+    }
+
+    public List<ReturnOrderEntity> getReturnOrders() {
+        return returnOrders;
+    }
+
+    public void setReturnOrders(List<ReturnOrderEntity> returnOrders) {
+        this.returnOrders = returnOrders;
     }
     
     @Override
