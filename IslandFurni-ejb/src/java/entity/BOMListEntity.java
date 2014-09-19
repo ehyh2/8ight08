@@ -9,6 +9,7 @@ package entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,7 +29,7 @@ public class BOMListEntity implements Serializable {
     private Long id;
     
     @OneToMany
-    private Collection<BOMEntity> bom = new ArrayList<BOMEntity>(); 
+    private List<BOMEntity> bom = new ArrayList<BOMEntity>(); 
 
     public Long getId() {
         return id;
@@ -38,11 +39,11 @@ public class BOMListEntity implements Serializable {
         this.id = id;
     }
 
-    public Collection<BOMEntity> getBom() {
+    public List<BOMEntity> getBom() {
         return bom;
     }
 
-    public void setBom(Collection<BOMEntity> bom) {
+    public void setBom(List<BOMEntity> bom) {
         this.bom = bom;
     }
 
