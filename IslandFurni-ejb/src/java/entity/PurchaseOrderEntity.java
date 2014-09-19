@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -28,12 +29,12 @@ public class PurchaseOrderEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long purchaseID;
-    private String type;
+    //private String type;
     private String purchaseDate;
     private String purchaseTime;
     private Long sendFrom;
     private Long sendTo;
-    private List quantity;
+    //private List quantity;
     private double cost;
     private String status;
     
@@ -54,12 +55,15 @@ public class PurchaseOrderEntity implements Serializable {
     
     @ManyToOne(cascade={CascadeType.ALL})
     private SupplierEntity supplier = new SupplierEntity();
+    
+    @OneToMany
+    private List<POQtyEntity> poQty = new ArrayList<POQtyEntity>(); 
 
     public PurchaseOrderEntity() {
     }
     
-    public void create(String type, String purchaseDate, String purchaseTime, Long sendFrom, Long sendTo, String status) {
-        this.setType(type);
+    public void create(String purchaseDate, String purchaseTime, Long sendFrom, Long sendTo, String status) {
+        
         this.setPurchaseDate(purchaseDate);
         this.setPurchaseTime(purchaseTime);
         this.setSendFrom(sendFrom);
@@ -75,13 +79,6 @@ public class PurchaseOrderEntity implements Serializable {
         this.purchaseID = purchaseID;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 
     public String getPurchaseDate() {
         return purchaseDate;
@@ -115,14 +112,6 @@ public class PurchaseOrderEntity implements Serializable {
         this.sendTo = sendTo;
     }
 
-    public List getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(List quantity) {
-        this.quantity = quantity;
-    }
-
     public double getCost() {
         return cost;
     }
@@ -137,6 +126,14 @@ public class PurchaseOrderEntity implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public List<POQtyEntity> getPoQty() {
+        return poQty;
+    }
+
+    public void setPoQty(List<POQtyEntity> poQty) {
+        this.poQty = poQty;
     }
      
     public List<RawMaterialEntity> getParts() {

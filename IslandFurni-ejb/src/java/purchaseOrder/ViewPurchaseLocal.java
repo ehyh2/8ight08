@@ -18,9 +18,9 @@ import javax.ejb.Local;
 public interface ViewPurchaseLocal {
     public Long createPurchaseOrder(String type, Long sendFrom, Long sendTo);
     public void deletePurchaseOrder(Long purchaseID);
-    public boolean addItemToPurchaseOrder(Long purchaseID, Long partID, int quantity); 
-    public boolean delItemFromPurchaseOrder(Long purchaseID, Long partID, int quantity);
-    public boolean editQtyOfPurchaseOrder(Long purchaseID, Long partID, int quantity);
+    public boolean addItemToPurchaseOrder(Long purchaseID, Long partID, int quantity, String type); 
+    public boolean delItemFromPurchaseOrder(Long purchaseID, Long partID, int quantity,String type);
+    public boolean editQtyOfPurchaseOrder(Long purchaseID, Long partID, int quantity, String type);
     //public void sendRawMaterialPurchaseOrder(Long purchaseID, Long sendTo);
     public List<ArrayList> viewUncompletedPurchaseOrderList(Long userID);
     public List<ArrayList> viewCompletedPurchaseOrderList(Long userID);
