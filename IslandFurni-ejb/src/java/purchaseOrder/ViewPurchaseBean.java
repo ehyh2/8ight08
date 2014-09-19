@@ -70,6 +70,7 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
     
     @Override
     public boolean addItemToPurchaseOrder(Long purchaseID, Long partID, int quantity) {
+        
         Query query1 = em.createQuery("SELECT p FROM PurchaseOrderEntity p WHERE r.purchaseID =:first");
         query1.setParameter("first", purchaseID);
         List result1 = query1.getResultList();
@@ -129,7 +130,10 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
                 em.persist(p);
                 return true;
             } 
-        } return false;  
+        } 
+        System.out.println("Item not available.");
+        return false;  
+        
     }
 
     @Override
