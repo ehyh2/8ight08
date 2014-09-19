@@ -51,17 +51,21 @@ public class ViewPurchaseBean implements ViewPurchaseLocal {
             purchaseOrderEntity.create(type, date, time, sendFrom, sendTo, status);
             em.persist(purchaseOrderEntity);
         } catch (Exception ex) {
-            System.out.println("\nException Error: " + ex.getMessage());
+            System.out.println("\nUnable to create purchase order: " + ex.getMessage());
         }
         return purchaseOrderEntity.getPurchaseID();
     }
     
     @Override
     public void deletePurchaseOrder(Long purchaseID) {
-        Query query = em.createQuery("SELECT p FROM PurchaseOrderEntity p WHERE p.purchaseID =:first");
-        query.setParameter("first", purchaseID);
-        PurchaseOrderEntity purchaseOrder = (PurchaseOrderEntity) query.getSingleResult();
-        em.remove(purchaseOrder);
+        try {
+            Query query = em.createQuery("SELECT p FROM PurchaseOrderEntity p WHERE p.purchaseID =:first");
+            query.setParameter("first", purchaseID);
+            PurchaseOrderEntity purchaseOrder = (PurchaseOrderEntity) query.getSingleResult();
+            em.remove(purchaseOrder);
+        } catch (Exception ex) {
+            System.out.println("\nUnable to delete purchase order: " + ex.getMessage());
+        }
     }
     
     @Override
