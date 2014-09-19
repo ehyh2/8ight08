@@ -29,6 +29,7 @@ public class ReturnOrderEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long returnID;
     private String type;
+    private Long productID;
     private String sendDate;
     private String sendTime;
     private Long sendFrom;
@@ -58,8 +59,9 @@ public class ReturnOrderEntity implements Serializable {
     public ReturnOrderEntity() {
     }
     
-    public void create(String type, String sendDate, String sendTime, Long sendFrom, Long sendTo, int quantity, String returnStatus, String returnDetails) {
+    public void create(String type, Long productID, String sendDate, String sendTime, Long sendFrom, Long sendTo, int quantity, String returnStatus, String returnDetails) {
         this.setType(type);
+        this.setProductID(productID);
         this.setSendDate(sendDate);
         this.setSendTime(sendTime);
         this.setSendFrom(sendFrom);
@@ -85,6 +87,14 @@ public class ReturnOrderEntity implements Serializable {
         this.type = type;
     }
 
+    public Long getProductID() {
+        return productID;
+    }
+
+    public void setProductID(Long productID) {
+        this.productID = productID;
+    }
+   
     public String getSendDate() {
         return sendDate;
     }
