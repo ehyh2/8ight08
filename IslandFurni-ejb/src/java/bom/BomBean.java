@@ -6,6 +6,7 @@
 package bom;
 
 import entity.BOMEntity;
+import entity.BOMListEntity;
 import entity.RawMaterialEntity;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,48 +26,65 @@ public class BomBean implements BomBeanLocal {
     private EntityManager em;
 
     //for global hq to create bom
+//    @Override
+//    public boolean createBOM(List<String> rm, List<String> qty) {
+//
+//        List<RawMaterialEntity> rmlist = new ArrayList<RawMaterialEntity>();
+//        List<Integer> qtylist = new ArrayList<Integer>();
+//        BOMEntity bom = new BOMEntity();
+//
+//        try {
+//            //to get the list of raw materials
+//            for (String id : rm) {
+//                Long longId = Long.parseLong(id);
+//                Query query = em.createQuery("SELECT rm FROM RawMaterialEntity rm WHERE rm.id =:first");
+//                query.setParameter("first", longId);
+//                List results = query.getResultList();
+//                if (!results.isEmpty()) {
+//                    for (Object o : results) {
+//                        RawMaterialEntity raw;
+//                        raw = (RawMaterialEntity) o;
+//                        rmlist.add(raw);
+//                    }
+//                } else {
+//                    System.out.println("Cannot find raw material");
+//                    return false;
+//                }
+//            }
+//
+//            //to get the list of quantity
+//            for (String q : qty) {
+//                Integer quantity = Integer.parseInt(q);
+//                qtylist.add(quantity);
+//            }
+//
+//            //create the bom
+//            bom.setRawMats(rmlist);
+//            bom.setQuantity(qtylist);
+//            em.persist(bom);
+//            return true;
+//        } catch (Exception e) {
+//            System.out.println("exception in create bom method");
+//            System.out.println(e.getMessage());
+//            return false;
+//        }
+//    }
+    
     @Override
-    public boolean createBOM(List<String> rm, List<String> qty) {
+    public boolean createBOM(List<Long> rawMatId, List<Integer> qty) {
+        BOMListEntity bom = new BOMListEntity();
 
-        List<RawMaterialEntity> rmlist = new ArrayList<RawMaterialEntity>();
-        List<Integer> qtylist = new ArrayList<Integer>();
-        BOMEntity bom = new BOMEntity();
+        for (Long l : rawMatId) {
 
-        try {
-            //to get the list of raw materials
-            for (String id : rm) {
-                Long longId = Long.parseLong(id);
-                Query query = em.createQuery("SELECT rm FROM RawMaterialEntity rm WHERE rm.id =:first");
-                query.setParameter("first", longId);
-                List results = query.getResultList();
-                if (!results.isEmpty()) {
-                    for (Object o : results) {
-                        RawMaterialEntity raw;
-                        raw = (RawMaterialEntity) o;
-                        rmlist.add(raw);
-                    }
-                } else {
-                    System.out.println("Cannot find raw material");
-                    return false;
-                }
-            }
+            BOMEntity details = new BOMEntity();
+            details.setRawMats(l);
+            int index = rawMatId.indexOf(l);
+            int quantity = qty.get(index);
+            details.setQuantity(index, quantity);
 
-            //to get the list of quantity
-            for (String q : qty) {
-                Integer quantity = Integer.parseInt(q);
-                qtylist.add(quantity);
-            }
-
-            //create the bom
-            bom.setRawMats(rmlist);
-            bom.setQuantity(qtylist);
-            em.persist(bom);
-            return true;
-        } catch (Exception e) {
-            System.out.println("exception in create bom method");
-            System.out.println(e.getMessage());
-            return false;
+            bom.setBom(details);
         }
+
     }
 
     //for global hq to delete bom

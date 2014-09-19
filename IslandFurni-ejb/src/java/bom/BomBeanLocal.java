@@ -15,7 +15,7 @@ import javax.ejb.Local;
  */
 @Local
 public interface BomBeanLocal {
-    public boolean createBOM(List<String> rm, List<String> qty);
+    public boolean createBOM(List<Long> rawMatId, List<Integer> qty);
     public boolean deleteBOM(String id);
     //public boolean editBOM(String id, List<String> rm, List<String> qty);
     public boolean addItemToBOM(String id, String rm, String qty);
