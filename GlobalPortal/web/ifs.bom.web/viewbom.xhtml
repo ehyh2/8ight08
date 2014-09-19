@@ -19,7 +19,7 @@
             </h:inputText>
             <h:commandButton action="viewbom.xhtml" value="Search BOM" actionListener="#{bomManagerBean.searchBom}" />
             <ui:repeat var="bom" value="#{bomManagerBean.bomList}">
-                <h:outputText style="font-weight: bold" value="BOM: " />
+                <h:outputText style="font-weight: bold" value="BOM ID: " />
                 <li>#{bom}</li>
             </ui:repeat>
             <ui:repeat var="bom" value="#{bomManagerBean.filteredBomList}">

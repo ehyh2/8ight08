@@ -30,6 +30,13 @@ public class BOMListEntity implements Serializable {
     
     @OneToMany
     private List<BOMEntity> bom = new ArrayList<BOMEntity>(); 
+    
+    public BOMListEntity(){
+        
+    }
+    public BOMListEntity(Long id) {
+        this.id = id;
+    }
 
     public Long getId() {
         return id;

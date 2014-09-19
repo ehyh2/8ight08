@@ -16,7 +16,6 @@ import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 
-
 /**
  *
  * @author Esther Hong
@@ -27,11 +26,11 @@ public class BOMManagerBean implements Serializable {
 
     @EJB
     private BomBeanLocal bomBean;
-    
-    private String rm;
-    private String qty;
-    private List<String> rmList;
-    private List<String> qtyList;
+
+    private long rm;
+    private int qty;
+    private List<Long> rmList;
+    private List<Integer> qtyList;
     private String id;
     private String message = null;
     private List<String> bomList;
@@ -43,7 +42,7 @@ public class BOMManagerBean implements Serializable {
     public BOMManagerBean() {
         qtyList = new ArrayList<>();
         rmList = new ArrayList<>();
-        
+
     }
 
     public List<String> getFilteredBomList() {
@@ -70,40 +69,37 @@ public class BOMManagerBean implements Serializable {
         this.message = message;
     }
 
-    public String getRm() {
+    public long getRm() {
         return rm;
     }
 
-    public void setRm(String rm) {
+    public void setRm(long rm) {
         this.rm = rm;
     }
 
-    public String getQty() {
+    public int getQty() {
         return qty;
     }
 
-    public void setQty(String qty) {
+    public void setQty(int qty) {
         this.qty = qty;
     }
 
-    public List<String> getRmList() {
+    public List<Long> getRmList() {
         return rmList;
     }
 
-    public void setRmList(List<String> rmList) {
+    public void setRmList(List<Long> rmList) {
         this.rmList = rmList;
-        //rmList.add(rm);
     }
 
-    public List<String> getQtyList() {
+    public List<Integer> getQtyList() {
         return qtyList;
     }
 
-    public void setQtyList(List<String> qtyList) {
+    public void setQtyList(List<Integer> qtyList) {
         this.qtyList = qtyList;
-        //qtyList.add(qty);
     }
-
 
     public String getId() {
         return id;
@@ -121,23 +117,28 @@ public class BOMManagerBean implements Serializable {
             FacesContext context = FacesContext.getCurrentInstance();
             HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
             session.invalidate();
+            System.out.println("Added");
 
         } else {
-
+            System.out.println("not added");
             // including HTML requires that you set escape="false" in view
             //message = "<p>Sorry, " + country + " not added.</p>";
 
+            FacesContext context = FacesContext.getCurrentInstance();
+            HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
+            session.invalidate();
+
         }
     }
-    
+
     public void addToBom(ActionEvent event) {
         //int q = Integer.parseInt("qty");
         qtyList.add(qty);
         rmList.add(rm);
         message = "Added";
-       
+
     }
-    
+
     public void delBom(ActionEvent event) {
         boolean delStatus = bomBean.deleteBOM(id);
         if (delStatus) {
@@ -151,22 +152,32 @@ public class BOMManagerBean implements Serializable {
 
             // including HTML requires that you set escape="false" in view
             message = "<p>Sorry, BOM " + id + " not deleted.</p>";
+            FacesContext context = FacesContext.getCurrentInstance();
+            HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
+            session.invalidate();
 
         }
     }
-    
-    public void editBom(ActionEvent event) {
-        
-    }
-    
-    public void viewBom(ActionEvent event) {
-        bomList = bomBean.viewBOMList();
-        
-    }
-    
-    public void searchBom(ActionEvent event) {
-        filteredBomList = bomBean.searchBOM(id);
-        
+
+    public void addBomItem(ActionEvent event) {
+
     }
 
+    public void delBomItem(ActionEvent event) {
+
+    }
+
+    public void editBomQty(ActionEvent event) {
+
+    }
+
+//    public void viewBom(ActionEvent event) {
+//        bomList = bomBean.viewBOMList();
+//        
+//    }
+//    
+//    public void searchBom(ActionEvent event) {
+//        filteredBomList = bomBean.searchBOM(id);
+//        
+//    }
 }

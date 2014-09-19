@@ -69,22 +69,47 @@ public class BomBean implements BomBeanLocal {
 //            return false;
 //        }
 //    }
-    
     @Override
     public boolean createBOM(List<Long> rawMatId, List<Integer> qty) {
         BOMListEntity bom = new BOMListEntity();
+        List<BOMEntity> list = new ArrayList<BOMEntity>();
+        System.out.println("create called");
 
         for (Long l : rawMatId) {
-
+            System.out.println("looping list input");
             BOMEntity details = new BOMEntity();
-            details.setRawMats(l);
+            //details.setRawMat(l);
+
+            //Get raw material entity
+            Query query = em.createQuery("SELECT rm FROM RawMaterialEntity rm WHERE rm.id =:first");
+            query.setParameter("first", l);
+            List results = query.getResultList();
+            if (!results.isEmpty() && results.size() == 1) {
+                for (Object o : results) {
+                    RawMaterialEntity raw;
+                    raw = (RawMaterialEntity) o;
+                    details.setRawMat(raw);
+                    System.out.println("added rm");
+
+                }
+            } else {
+                System.out.println("Cannot find raw material");
+                return false;
+            }
             int index = rawMatId.indexOf(l);
             int quantity = qty.get(index);
-            details.setQuantity(index, quantity);
+            details.setQty(quantity);
+            System.out.println("added qty");
+            em.persist(details);
+            System.out.println("added bom");
+            list = bom.getBom();
+            list.add(details);
 
-            bom.setBom(details);
         }
-
+        bom.setBom(list);
+        em.persist(bom);
+        System.out.println("added bomlist");
+        return true;
     }
 
     //for global hq to delete bom
@@ -169,217 +194,217 @@ public class BomBean implements BomBeanLocal {
 //        return false;
 //    }
     //for global hq to add item to bom
-    @Override
-    public boolean addItemToBOM(String id, String rm, String qty) {
-
-        Long bomId = Long.parseLong(id);
-        Long rawId = Long.parseLong(id);
-        int quantity = Integer.parseInt(qty);
-
-        try {
-            Query query = em.createQuery("SELECT b FROM BOMEntity b WHERE b.id =:first");
-            query.setParameter("first", bomId);
-            List results = query.getResultList();
-            if (!results.isEmpty()) {
-                for (Object o : results) {
-                    BOMEntity bom = (BOMEntity) o;
-                    Query query1 = em.createQuery("SELECT rm FROM RawMaterialEntity rm WHERE rm.id =:second");
-                    query1.setParameter("second", rawId);
-                    List results1 = query1.getResultList();
-                    if (results1.size() != 0) {
-                        for (Object o1 : results1) {
-                            RawMaterialEntity raw;
-                            raw = (RawMaterialEntity) o1;
-                            List<RawMaterialEntity> rmList = new ArrayList<RawMaterialEntity>();
-                            rmList = bom.getRawMats();
-                            rmList.add(raw);
-                            bom.setRawMats(rmList);
-                            List<Integer> qtyList = new ArrayList<Integer>();
-                            qtyList = bom.getQuantity();
-                            qtyList.add(quantity);
-                            bom.setQuantity(qtyList);
-                            em.persist(bom);
-                            return true;
-                        }
-                    } else {
-                        System.out.println("raw material does not exist");
-                    }
-                    return false;
-                }
-            }
-            System.out.println("bom does not exist");
-            return false;
-        } catch (Exception e) {
-            System.out.println("exception in add item to bom method");
-            System.out.println(e.getMessage());
-        }
-        return false;
-    }
-
-    //for global hq to delete item from bom
-    @Override
-    public boolean delItemFromBOM(String id, String rm, String qty) {
-
-        Long bomId = Long.parseLong(id);
-        Long rawId = Long.parseLong(id);
-        int quantity = Integer.parseInt(qty);
-
-        try {
-            Query query = em.createQuery("SELECT b FROM BOMEntity b WHERE b.id =:first");
-            query.setParameter("first", bomId);
-            List results = query.getResultList();
-            if (!results.isEmpty()) {
-                for (Object o : results) {
-                    BOMEntity bom = (BOMEntity) o;
-                    Query query1 = em.createQuery("SELECT rm FROM RawMaterialEntity rm WHERE rm.id =:second");
-                    query1.setParameter("second", rawId);
-                    List results1 = query1.getResultList();
-                    if (results1.size() != 0) {
-                        for (Object o1 : results1) {
-                            RawMaterialEntity raw;
-                            raw = (RawMaterialEntity) o1;
-                            List<RawMaterialEntity> rmList = new ArrayList<RawMaterialEntity>();
-                            rmList = bom.getRawMats();
-                            rmList.remove(raw);
-                            bom.setRawMats(rmList);
-                            List<Integer> qtyList = new ArrayList<Integer>();
-                            qtyList = bom.getQuantity();
-                            qtyList.remove(quantity);
-                            bom.setQuantity(qtyList);
-                            em.persist(bom);
-                            return true;
-                        }
-                    } else {
-                        System.out.println("raw material does not exist");
-                    }
-                    return false;
-                }
-            }
-            System.out.println("bom does not exist");
-            return false;
-        } catch (Exception e) {
-            System.out.println("exception in delete item from bom method");
-            System.out.println(e.getMessage());
-        }
-        return false;
-    }
-
-    //for global hq to edit the item quantity in the bom
-    @Override
-    public boolean editQty(String id, String rm, String qty) {
-
-        Long bomId = Long.parseLong(id);
-        Long rawId = Long.parseLong(id);
-        int quantity = Integer.parseInt(qty);
-
-        try {
-            Query query = em.createQuery("SELECT b FROM BOMEntity b WHERE b.id =:first");
-            query.setParameter("first", bomId);
-            List results = query.getResultList();
-            if (!results.isEmpty()) {
-                for (Object o : results) {
-                    BOMEntity bom = (BOMEntity) o;
-                    List<Integer> qtyList = new ArrayList<Integer>();
-                    if (!qtyList.isEmpty()) {
-                        List<RawMaterialEntity> rmList = new ArrayList<RawMaterialEntity>();
-                        rmList = bom.getRawMats();
-                        int index = rmList.indexOf(rawId);
-                        qtyList.set(index, quantity);
-                        em.persist(bom);
-                        return true;
-                    } else {
-                        System.out.println("no quantity to edit");
-                    }
-                    return false;
-                }
-            }
-            System.out.println("bom does not exist");
-            return false;
-        } catch (Exception e) {
-            System.out.println("exception in edit qty of item in bom method");
-            System.out.println(e.getMessage());
-        }
-        return false;
-    }
-
-    //for global hq to search for bom
-    @Override
-    public List<String> searchBOM(String id
-    ) {
-
-        List<String> searchList = new ArrayList<String>();
-        Long longId = Long.parseLong(id);
-
-        try {
-            //to find the bom
-            Query query = em.createQuery("SELECT bom FROM BOMEntity bom WHERE bom.id =:first");
-            query.setParameter("first", longId);
-            List results = query.getResultList();
-            if (!results.isEmpty()) {
-                for (Object o : results) {
-                    BOMEntity bom = (BOMEntity) o;
-
-                    //to get the bom details
-                    String result = new String();
-                    result = result + String.valueOf(bom.getId());
-
-                    for (Object r : bom.getRawMats()) {
-                        RawMaterialEntity raw = (RawMaterialEntity) r;
-                        result = result + "#" + String.valueOf(raw.getId());
-                    }
-
-                    for (Object q : bom.getQuantity()) {
-                        Integer i = (Integer) q;
-                        result = result + "#" + String.valueOf(i);
-                    }
-                    searchList.add(result);
-                }
-            } else {
-                System.out.println("BOM does not exist");
-            }
-        } catch (Exception e) {
-            System.out.println("exception in search bom method");
-            System.out.println(e.getMessage());
-        }
-
-        return searchList;
-    }
-
-    //for manu manager to view list of bom
-    @Override
-    public List<String> viewBOMList() {
-        List<String> viewList = new ArrayList<String>();
-        try {
-            Query query = em.createQuery("SELECT bom FROM BOMEntity bom");
-            List results = query.getResultList();
-            if (!results.isEmpty()) {
-                for (Object o : results) {
-                    BOMEntity bom = (BOMEntity) o;
-
-                    //to get the bom details
-                    String result = new String();
-                    result = result + String.valueOf(bom.getId());
-
-                    for (Object r : bom.getRawMats()) {
-                        RawMaterialEntity raw = (RawMaterialEntity) r;
-                        result = result + "#" + String.valueOf(raw.getId());
-                    }
-
-                    for (Object q : bom.getQuantity()) {
-                        Integer i = (Integer) q;
-                        result = result + "#" + String.valueOf(i);
-                    }
-                    viewList.add(result);
-                }
-            } else {
-                System.out.println("No BOM to view");
-            }
-        } catch (Exception e) {
-            System.out.println("exception in view bom list method");
-            System.out.println(e.getMessage());
-        }
-
-        return viewList;
-    }
-
+//    @Override
+//    public boolean addItemToBOM(String id, String rm, String qty) {
+//
+//        Long bomId = Long.parseLong(id);
+//        Long rawId = Long.parseLong(id);
+//        int quantity = Integer.parseInt(qty);
+//
+//        try {
+//            Query query = em.createQuery("SELECT b FROM BOMEntity b WHERE b.id =:first");
+//            query.setParameter("first", bomId);
+//            List results = query.getResultList();
+//            if (!results.isEmpty()) {
+//                for (Object o : results) {
+//                    BOMEntity bom = (BOMEntity) o;
+//                    Query query1 = em.createQuery("SELECT rm FROM RawMaterialEntity rm WHERE rm.id =:second");
+//                    query1.setParameter("second", rawId);
+//                    List results1 = query1.getResultList();
+//                    if (results1.size() != 0) {
+//                        for (Object o1 : results1) {
+//                            RawMaterialEntity raw;
+//                            raw = (RawMaterialEntity) o1;
+//                            List<RawMaterialEntity> rmList = new ArrayList<RawMaterialEntity>();
+//                            rmList = bom.getRawMats();
+//                            rmList.add(raw);
+//                            bom.setRawMats(rmList);
+//                            List<Integer> qtyList = new ArrayList<Integer>();
+//                            qtyList = bom.getQuantity();
+//                            qtyList.add(quantity);
+//                            bom.setQuantity(qtyList);
+//                            em.persist(bom);
+//                            return true;
+//                        }
+//                    } else {
+//                        System.out.println("raw material does not exist");
+//                    }
+//                    return false;
+//                }
+//            }
+//            System.out.println("bom does not exist");
+//            return false;
+//        } catch (Exception e) {
+//            System.out.println("exception in add item to bom method");
+//            System.out.println(e.getMessage());
+//        }
+//        return false;
+//    }
+//
+//    //for global hq to delete item from bom
+//    @Override
+//    public boolean delItemFromBOM(String id, String rm, String qty) {
+//
+//        Long bomId = Long.parseLong(id);
+//        Long rawId = Long.parseLong(id);
+//        int quantity = Integer.parseInt(qty);
+//
+//        try {
+//            Query query = em.createQuery("SELECT b FROM BOMEntity b WHERE b.id =:first");
+//            query.setParameter("first", bomId);
+//            List results = query.getResultList();
+//            if (!results.isEmpty()) {
+//                for (Object o : results) {
+//                    BOMEntity bom = (BOMEntity) o;
+//                    Query query1 = em.createQuery("SELECT rm FROM RawMaterialEntity rm WHERE rm.id =:second");
+//                    query1.setParameter("second", rawId);
+//                    List results1 = query1.getResultList();
+//                    if (results1.size() != 0) {
+//                        for (Object o1 : results1) {
+//                            RawMaterialEntity raw;
+//                            raw = (RawMaterialEntity) o1;
+//                            List<RawMaterialEntity> rmList = new ArrayList<RawMaterialEntity>();
+//                            rmList = bom.getRawMats();
+//                            rmList.remove(raw);
+//                            bom.setRawMats(rmList);
+//                            List<Integer> qtyList = new ArrayList<Integer>();
+//                            qtyList = bom.getQuantity();
+//                            qtyList.remove(quantity);
+//                            bom.setQuantity(qtyList);
+//                            em.persist(bom);
+//                            return true;
+//                        }
+//                    } else {
+//                        System.out.println("raw material does not exist");
+//                    }
+//                    return false;
+//                }
+//            }
+//            System.out.println("bom does not exist");
+//            return false;
+//        } catch (Exception e) {
+//            System.out.println("exception in delete item from bom method");
+//            System.out.println(e.getMessage());
+//        }
+//        return false;
+//    }
+//
+//    //for global hq to edit the item quantity in the bom
+//    @Override
+//    public boolean editQty(String id, String rm, String qty) {
+//
+//        Long bomId = Long.parseLong(id);
+//        Long rawId = Long.parseLong(id);
+//        int quantity = Integer.parseInt(qty);
+//
+//        try {
+//            Query query = em.createQuery("SELECT b FROM BOMEntity b WHERE b.id =:first");
+//            query.setParameter("first", bomId);
+//            List results = query.getResultList();
+//            if (!results.isEmpty()) {
+//                for (Object o : results) {
+//                    BOMEntity bom = (BOMEntity) o;
+//                    List<Integer> qtyList = new ArrayList<Integer>();
+//                    if (!qtyList.isEmpty()) {
+//                        List<RawMaterialEntity> rmList = new ArrayList<RawMaterialEntity>();
+//                        rmList = bom.getRawMats();
+//                        int index = rmList.indexOf(rawId);
+//                        qtyList.set(index, quantity);
+//                        em.persist(bom);
+//                        return true;
+//                    } else {
+//                        System.out.println("no quantity to edit");
+//                    }
+//                    return false;
+//                }
+//            }
+//            System.out.println("bom does not exist");
+//            return false;
+//        } catch (Exception e) {
+//            System.out.println("exception in edit qty of item in bom method");
+//            System.out.println(e.getMessage());
+//        }
+//        return false;
+//    }
+//
+//    //for global hq to search for bom
+//    @Override
+//    public List<String> searchBOM(String id
+//    ) {
+//
+//        List<String> searchList = new ArrayList<String>();
+//        Long longId = Long.parseLong(id);
+//
+//        try {
+//            //to find the bom
+//            Query query = em.createQuery("SELECT bom FROM BOMEntity bom WHERE bom.id =:first");
+//            query.setParameter("first", longId);
+//            List results = query.getResultList();
+//            if (!results.isEmpty()) {
+//                for (Object o : results) {
+//                    BOMEntity bom = (BOMEntity) o;
+//
+//                    //to get the bom details
+//                    String result = new String();
+//                    result = result + String.valueOf(bom.getId());
+//
+//                    for (Object r : bom.getRawMats()) {
+//                        RawMaterialEntity raw = (RawMaterialEntity) r;
+//                        result = result + "#" + String.valueOf(raw.getId());
+//                    }
+//
+//                    for (Object q : bom.getQuantity()) {
+//                        Integer i = (Integer) q;
+//                        result = result + "#" + String.valueOf(i);
+//                    }
+//                    searchList.add(result);
+//                }
+//            } else {
+//                System.out.println("BOM does not exist");
+//            }
+//        } catch (Exception e) {
+//            System.out.println("exception in search bom method");
+//            System.out.println(e.getMessage());
+//        }
+//
+//        return searchList;
+//    }
+//
+//    //for manu manager to view list of bom
+//    @Override
+//    public List<String> viewBOMList() {
+//        List<String> viewList = new ArrayList<String>();
+//        try {
+//            Query query = em.createQuery("SELECT bom FROM BOMEntity bom");
+//            List results = query.getResultList();
+//            if (!results.isEmpty()) {
+//                for (Object o : results) {
+//                    BOMEntity bom = (BOMEntity) o;
+//
+//                    //to get the bom details
+//                    String result = new String();
+//                    result = result + String.valueOf(bom.getId());
+//
+//                    for (Object r : bom.getRawMats()) {
+//                        RawMaterialEntity raw = (RawMaterialEntity) r;
+//                        result = result + "#" + String.valueOf(raw.getId());
+//                    }
+//
+//                    for (Object q : bom.getQuantity()) {
+//                        Integer i = (Integer) q;
+//                        result = result + "#" + String.valueOf(i);
+//                    }
+//                    viewList.add(result);
+//                }
+//            } else {
+//                System.out.println("No BOM to view");
+//            }
+//        } catch (Exception e) {
+//            System.out.println("exception in view bom list method");
+//            System.out.println(e.getMessage());
+//        }
+//
+//        return viewList;
+//    }
+//
 }

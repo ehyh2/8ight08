@@ -17,6 +17,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -28,11 +29,12 @@ public class BOMEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private List<Integer> quantity = new ArrayList<Integer>();
+    //private List<Integer> quantity = new ArrayList<Integer>();
+    private int qty;
     
-    @ManyToMany
-    @JoinTable(name="BOMEntity_RawMaterialEntity")
-    private List<RawMaterialEntity> rawMats = new ArrayList<RawMaterialEntity>();
+    
+    @OneToOne
+    private RawMaterialEntity rawMat;
     
     public BOMEntity() {
     }
@@ -45,21 +47,23 @@ public class BOMEntity implements Serializable {
         this.id = id;
     }
 
-    public List<Integer> getQuantity() {
-        return quantity;
+    public int getQty() {
+        return qty;
     }
 
-    public void setQuantity(List<Integer> quantity) {
-        this.quantity = quantity;
+    public void setQty(int qty) {
+        this.qty = qty;
     }
 
-    public List<RawMaterialEntity> getRawMats() {
-        return rawMats;
+    public RawMaterialEntity getRawMat() {
+        return rawMat;
     }
 
-    public void setRawMats(List<RawMaterialEntity> rawMats) {
-        this.rawMats = rawMats;
+    public void setRawMat(RawMaterialEntity rawMat) {
+        this.rawMat = rawMat;
     }
+
+    
 
     @Override
     public int hashCode() {
